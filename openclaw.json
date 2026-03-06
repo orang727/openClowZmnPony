@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.26",
+    "lastTouchedAt": "2026-03-02T16:30:11.585Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-03-01T02:58:29.934Z",
+    "lastRunVersion": "2026.2.26",
+    "lastRunCommand": "configure",
+    "lastRunMode": "local"
+  },
+  "auth": {
+    "profiles": {
+      "minimax-portal:default": {
+        "provider": "minimax-portal",
+        "mode": "oauth"
+      }
+    }
+  },
+  "models": {
+    "providers": {
+      "minimax-portal": {
+        "baseUrl": "https://api.minimaxi.com/anthropic",
+        "apiKey": "minimax-oauth",
+        "api": "anthropic-messages",
+        "models": [
+          {
+            "id": "MiniMax-M2.1",
+            "name": "MiniMax M2.1",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "MiniMax-M2.5",
+            "name": "MiniMax M2.5",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "minimax-portal/MiniMax-M2.5"
+      },
+      "models": {
+        "minimax-portal/MiniMax-M2.1": {
+          "alias": "minimax-m2.1"
+        },
+        "minimax-portal/MiniMax-M2.5": {
+          "alias": "minimax-m2.5"
+        }
+      },
+      "workspace": "C:\\Users\\Administrator\\.openclaw\\workspace",
+      "compaction": {
+        "mode": "safeguard"
+      }
+    },
+    "list": [
+      {
+        "id": "main"
+      },
+      {
+        "id": "expert",
+        "name": "expert",
+        "workspace": "C:\\Users\\Administrator\\.openclaw\\workspace-expert",
+        "agentDir": "C:\\Users\\Administrator\\.openclaw\\agents\\expert\\agent",
+        "model": "minimax-portal/MiniMax-M2.5"
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "agentId": "expert",
+      "match": {
+        "channel": "feishu",
+        "accountId": "expert"
+      }
+    }
+  ],
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "boot-md": {
+          "enabled": true
+        },
+        "bootstrap-extra-files": {
+          "enabled": true
+        },
+        "command-logger": {
+          "enabled": true
+        },
+        "session-memory": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "channels": {
+    "feishu": {
+      "accounts": {
+        "default": {
+          "enabled": true,
+          "appId": "cli_a907d72add78dcc5",
+          "appSecret": "b7IfExgINBR6FXocRfKfmcOyBBCO6WXy",
+          "domain": "feishu",
+          "groupPolicy": "open"
+        },
+        "expert": {
+          "enabled": true,
+          "appId": "cli_a92f0541edb8dbb5",
+          "appSecret": "ajewY0Q6U3ODrS3ccFUsRhWxjadbf7Gc",
+          "domain": "feishu",
+          "groupPolicy": "open"
+        }
+      }
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "bb5ac5972b8945ad0b7222159a9a64c0905e917a7b0bd064"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "calendar.add",
+        "contacts.add",
+        "reminders.add",
+        "web_search",
+        "web_fetch"
+      ]
+    }
+  },
+  "plugins": {
+    "entries": {
+      "minimax-portal-auth": {
+        "enabled": true
+      },
+      "feishu": {
+        "enabled": true
+      }
+    }
+  }
+}

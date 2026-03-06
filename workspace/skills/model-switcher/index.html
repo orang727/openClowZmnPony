@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 模型切换</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .status-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .status-label {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        .status-value {
+            font-weight: 600;
+            font-size: 16px;
+            color: #60a5fa;
+        }
+        .model-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .model-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        .model-card.selected {
+            border-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+        .model-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .model-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 16px;
+        }
+        .model-icon.m21 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .model-icon.m25 {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+        }
+        .model-info h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        .model-info p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        .model-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .feature-tag {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #e2e8f0;
+        }
+        .feature-tag.highlight {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+        }
+        .radio-indicator {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #475569;
+            border-radius: 50%;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .model-card.selected .radio-indicator {
+            border-color: #60a5fa;
+            background: #60a5fa;
+        }
+        .radio-indicator::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .model-card.selected .radio-indicator::after {
+            opacity: 1;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #e2e8f0;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #333;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .toast.success { background: #059669; }
+        .toast.error { background: #dc2626; }
+        .toast.warning { background: #d97706; }
+        .agent-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .agent-section h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #e2e8f0;
+        }
+        .agent-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .agent-name {
+            font-weight: 500;
+        }
+        .agent-model {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        select {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        select option {
+            background: #1a1a2e;
+            color: white;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #60a5fa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OpenClaw 模型切换</h1>
+        <p class="subtitle">选择 AI 模型以调整推理能力和响应速度</p>
+
+        <div class="status-bar">
+            <div>
+                <div class="status-label">当前默认模型</div>
+                <div class="status-value" id="current-model">加载中...</div>
+            </div>
+            <div>
+                <div class="status-label">网关状态</div>
+                <div class="status-value" id="gateway-status">检测中...</div>
+            </div>
+        </div>
+
+        <div id="model-list">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>正在加载模型配置...</p>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" id="btn-apply" onclick="applyModel()" disabled>应用更改</button>
+            <button class="btn btn-secondary" onclick="restartGateway()">重启网关</button>
+        </div>
+
+        <div class="agent-section" id="agent-section" style="display: none;">
+            <h2>智能体模型配置</h2>
+            <div id="agent-list"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        let config = null;
+        let selectedModel = null;
+        let availableModels = [];
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+
+        async function loadConfig() {
+            try {
+                const response = await fetch('/api/config');
+                const data = await response.json();
+                
+                if (data.success) {
+                    config = data.config;
+                    availableModels = data.models;
+                    selectedModel = data.currentModel;
+                    
+                    renderModels();
+                    renderAgents();
+                    updateStatus();
+                } else {
+                    showToast('加载配置失败: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showToast('无法连接服务器', 'error');
+            }
+        }
+
+        function renderModels() {
+            const container = document.getElementById('model-list');
+            container.innerHTML = '';
+
+            availableModels.forEach(model => {
+                const isSelected = selectedModel === model.fullId;
+                const card = document.createElement('div');
+                card.className = 'model-card' + (isSelected ? ' selected' : '');
+                card.onclick = () => selectModel(model.fullId);
+                
+                const iconClass = model.id.includes('2.5') ? 'm25' : 'm21';
+                const features = [];
+                
+                if (model.reasoning) {
+                    features.push({ text: '深度推理', highlight: true });
+                }
+                features.push({ text: `${model.contextWindow / 1000}K 上下文`, highlight: false });
+                features.push({ text: `最大 ${model.maxTokens} tokens`, highlight: false });
+                
+                card.innerHTML = `
+                    <div class="model-header">
+                        <div class="model-icon ${iconClass}">${model.id.includes('2.5') ? '2.5' : '2.1'}</div>
+                        <div class="model-info">
+                            <h3>${model.name}</h3>
+                            <p>${model.id}</p>
+                        </div>
+                        <div class="radio-indicator"></div>
+                    </div>
+                    <div class="model-features">
+                        ${features.map(f => `<span class="feature-tag${f.highlight ? ' highlight' : ''}">${f.text}</span>`).join('')}
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        function selectModel(modelId) {
+            selectedModel = modelId;
+            
+            document.querySelectorAll('.model-card').forEach((card, index) => {
+                card.classList.toggle('selected', availableModels[index].fullId === modelId);
+            });
+            
+            const currentModel = config?.agents?.defaults?.model?.primary;
+            document.getElementById('btn-apply').disabled = (selectedModel === currentModel);
+        }
+
+        function renderAgents() {
+            const agents = config?.agents?.list || [];
+            if (agents.length <= 1) {
+                document.getElementById('agent-section').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('agent-section').style.display = 'block';
+            const container = document.getElementById('agent-list');
+            container.innerHTML = '';
+
+            agents.forEach(agent => {
+                if (agent.id === 'main') return;
+                
+                const currentModel = agent.model || config?.agents?.defaults?.model?.primary;
+                const item = document.createElement('div');
+                item.className = 'agent-item';
+                item.innerHTML = `
+                    <div>
+                        <div class="agent-name">${agent.name || agent.id}</div>
+                        <div class="agent-model">ID: ${agent.id}</div>
+                    </div>
+                    <select onchange="updateAgentModel('${agent.id}', this.value)">
+                        ${availableModels.map(m => 
+                            `<option value="${m.fullId}" ${currentModel === m.fullId ? 'selected' : ''}>${m.name}</option>`
+                        ).join('')}
+                    </select>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function updateStatus() {
+            const currentModel = config?.agents?.defaults?.model?.primary || '未配置';
+            const modelName = availableModels.find(m => m.fullId === currentModel)?.name || currentModel;
+            document.getElementById('current-model').textContent = modelName;
+            
+            // 检查网关状态
+            checkGatewayStatus();
+        }
+
+        async function checkGatewayStatus() {
+            try {
+                const response = await fetch('/api/gateway-status');
+                const data = await response.json();
+                document.getElementById('gateway-status').textContent = data.running ? '运行中' : '已停止';
+                document.getElementById('gateway-status').style.color = data.running ? '#34d399' : '#f87171';
+            } catch {
+                document.getElementById('gateway-status').textContent = '未知';
+            }
+        }
+
+        async function applyModel() {
+            if (!selectedModel) return;
+            
+            const btn = document.getElementById('btn-apply');
+            btn.disabled = true;
+            btn.textContent = '应用中...';
+
+            try {
+                const response = await fetch('/api/set-model', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ model: selectedModel })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    showToast('模型已切换，建议重启网关生效', 'success');
+                    await loadConfig();
+                } else {
+                    showToast('切换失败: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showToast('请求失败: ' + error.message, 'error');
+            }
+
+            btn.textContent = '应用更改';
+        }
+
+        async function updateAgentModel(agentId, model) {
+            try {
+                const response = await fetch('/api/set-agent-model', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ agentId, model })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    showToast(`${agentId} 模型已更新`, 'success');
+                } else {
+                    showToast('更新失败: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showToast('请求失败', 'error');
+            }
+        }
+
+        async function restartGateway() {
+            showToast('正在重启网关...', 'warning');
+            
+            try {
+                const response = await fetch('/api/restart-gateway', { method: 'POST' });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast('网关重启命令已发送', 'success');
+                    setTimeout(checkGatewayStatus, 3000);
+                } else {
+                    showToast('重启失败: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showToast('重启请求失败', 'error');
+            }
+        }
+
+        // 页面加载
+        document.addEventListener('DOMContentLoaded', loadConfig);
+    </script>
+</body>
+</html>

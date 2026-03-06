@@ -1,0 +1,29 @@
+# 大文件目录
+browser/
+media/
+
+# 敏感信息
+credentials/
+
+# 备份文件
+*.bak
+*.bak.*
+
+# 运行时数据
+logs/
+delivery-queue/
+cron/
+update-check.json
+
+# 设备信息
+devices/
+
+# 会话/补全缓存
+completions/
+
+# 记忆数据（隐私）
+memory/
+
+# Cookie 配置（到新电脑用配置页面重新配置）
+workspace/skills/*/config.json
+workspace-expert/skills/*/config.json

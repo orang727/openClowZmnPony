@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 平台 Cookie 配置</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .platform-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        .platform-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+        .platform-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 16px;
+        }
+        .platform-icon.bilibili { background: #fb7299; }
+        .platform-icon.xiaohongshu { background: #ff2442; }
+        .platform-icon.douyin { background: #000; }
+        .platform-icon.zhihu { background: #0084ff; }
+        .platform-title {
+            flex: 1;
+        }
+        .platform-title h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .platform-title p {
+            color: #888;
+            font-size: 14px;
+        }
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-badge.configured {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-badge.not-configured {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+        .cookie-guide {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .cookie-guide h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        .cookie-guide ol {
+            padding-left: 20px;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .cookie-guide code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+        }
+        .cookie-fields {
+            margin-bottom: 16px;
+        }
+        .cookie-fields label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .cookie-fields input,
+        .cookie-fields textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Consolas', monospace;
+            transition: border-color 0.2s;
+        }
+        .cookie-fields input:focus,
+        .cookie-fields textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .cookie-fields textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #333;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .toast.success { background: #2e7d32; }
+        .toast.error { background: #c62828; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OpenClaw 平台 Cookie 配置</h1>
+
+        <!-- B站 -->
+        <div class="platform-card">
+            <div class="platform-header">
+                <div class="platform-icon bilibili">B</div>
+                <div class="platform-title">
+                    <h2>哔哩哔哩 (Bilibili)</h2>
+                    <p>视频信息、评论、下载链接</p>
+                </div>
+                <span class="status-badge not-configured" id="bilibili-status">未配置</span>
+            </div>
+            <div class="cookie-guide">
+                <h3>获取方法</h3>
+                <ol>
+                    <li>浏览器打开 <code>bilibili.com</code> 并登录</li>
+                    <li>按 <code>F12</code> 打开开发者工具</li>
+                    <li>点击 <code>Application</code> → <code>Cookies</code> → <code>https://www.bilibili.com</code></li>
+                    <li>找到并复制以下 Cookie 值</li>
+                </ol>
+            </div>
+            <div class="cookie-fields">
+                <div class="field-row">
+                    <div>
+                        <label>SESSDATA *</label>
+                        <input type="text" id="bilibili-sessdata" placeholder="登录凭证">
+                    </div>
+                    <div>
+                        <label>bili_jct *</label>
+                        <input type="text" id="bilibili-bili_jct" placeholder="CSRF Token">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div>
+                        <label>buvid3</label>
+                        <input type="text" id="bilibili-buvid3" placeholder="设备标识">
+                    </div>
+                    <div>
+                        <label>DedeUserID</label>
+                        <input type="text" id="bilibili-dedeuserid" placeholder="用户 UID">
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveBilibili()">保存配置</button>
+                <button class="btn btn-secondary" onclick="clearBilibili()">清除</button>
+            </div>
+        </div>
+
+        <!-- 小红书 -->
+        <div class="platform-card">
+            <div class="platform-header">
+                <div class="platform-icon xiaohongshu">小</div>
+                <div class="platform-title">
+                    <h2>小红书 (Xiaohongshu)</h2>
+                    <p>推荐笔记列表</p>
+                </div>
+                <span class="status-badge not-configured" id="xiaohongshu-status">未配置</span>
+            </div>
+            <div class="cookie-guide">
+                <h3>获取方法</h3>
+                <ol>
+                    <li>浏览器打开 <code>xiaohongshu.com</code> 并登录</li>
+                    <li>按 <code>F12</code> → <code>Network</code> 标签</li>
+                    <li>刷新页面，点击任意请求</li>
+                    <li>在 <code>Request Headers</code> 中复制完整的 <code>Cookie</code> 字符串</li>
+                </ol>
+            </div>
+            <div class="cookie-fields">
+                <label>完整 Cookie 字符串 *</label>
+                <textarea id="xiaohongshu-cookie" placeholder="粘贴完整的 Cookie 字符串，包含 a1、web_session 等字段"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveXiaohongshu()">保存配置</button>
+                <button class="btn btn-secondary" onclick="clearXiaohongshu()">清除</button>
+            </div>
+        </div>
+
+        <!-- 抖音 -->
+        <div class="platform-card">
+            <div class="platform-header">
+                <div class="platform-icon douyin">抖</div>
+                <div class="platform-title">
+                    <h2>抖音 (Douyin)</h2>
+                    <p>视频信息解析（功能受限）</p>
+                </div>
+                <span class="status-badge not-configured" id="douyin-status">未配置</span>
+            </div>
+            <div class="cookie-guide">
+                <h3>获取方法</h3>
+                <ol>
+                    <li>浏览器打开 <code>douyin.com</code> 并登录</li>
+                    <li>按 <code>F12</code> → <code>Network</code> 标签</li>
+                    <li>刷新页面，点击任意请求</li>
+                    <li>在 <code>Request Headers</code> 中复制完整的 <code>Cookie</code> 字符串</li>
+                </ol>
+            </div>
+            <div class="cookie-fields">
+                <label>完整 Cookie 字符串（可选，配置后可能提高成功率）</label>
+                <textarea id="douyin-cookie" placeholder="粘贴完整的 Cookie 字符串"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveDouyin()">保存配置</button>
+                <button class="btn btn-secondary" onclick="clearDouyin()">清除</button>
+            </div>
+        </div>
+
+        <!-- 知乎 -->
+        <div class="platform-card">
+            <div class="platform-header">
+                <div class="platform-icon zhihu">知</div>
+                <div class="platform-title">
+                    <h2>知乎 (Zhihu)</h2>
+                    <p>搜索、热门回答、问题详情</p>
+                </div>
+                <span class="status-badge not-configured" id="zhihu-status">未配置</span>
+            </div>
+            <div class="cookie-guide">
+                <h3>获取方法</h3>
+                <ol>
+                    <li>浏览器打开 <code>zhihu.com</code> 并登录</li>
+                    <li>按 <code>F12</code> → <code>Application</code> → <code>Cookies</code></li>
+                    <li>找到并复制以下 Cookie 值（搜索功能需要 <code>z_c0</code>）</li>
+                </ol>
+            </div>
+            <div class="cookie-fields">
+                <div class="field-row">
+                    <div>
+                        <label>z_c0 *（搜索必需）</label>
+                        <input type="text" id="zhihu-z_c0" placeholder="登录凭证">
+                    </div>
+                    <div>
+                        <label>_xsrf</label>
+                        <input type="text" id="zhihu-xsrf" placeholder="CSRF Token">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div>
+                        <label>d_c0</label>
+                        <input type="text" id="zhihu-d_c0" placeholder="设备标识">
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveZhihu()">保存配置</button>
+                <button class="btn btn-secondary" onclick="clearZhihu()">清除</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const API_BASE = '';  // 使用相对路径
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+
+        // 保存配置到服务器
+        async function saveConfig(platform, config) {
+            try {
+                const response = await fetch(`${API_BASE}/api/save`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ platform, config })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showToast(result.message, 'success');
+                    updateStatus(platform, true);
+                } else {
+                    showToast(result.message, 'error');
+                }
+            } catch (error) {
+                showToast('保存失败：' + error.message, 'error');
+            }
+        }
+
+        // 清除配置
+        async function clearConfig(platform) {
+            try {
+                const response = await fetch(`${API_BASE}/api/clear`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ platform })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showToast(result.message, 'success');
+                    updateStatus(platform, false);
+                } else {
+                    showToast(result.message, 'error');
+                }
+            } catch (error) {
+                showToast('清除失败：' + error.message, 'error');
+            }
+        }
+
+        // 更新状态徽章
+        function updateStatus(platform, configured) {
+            const status = document.getElementById(`${platform}-status`);
+            if (configured) {
+                status.textContent = '已配置';
+                status.className = 'status-badge configured';
+            } else {
+                status.textContent = '未配置';
+                status.className = 'status-badge not-configured';
+            }
+        }
+
+        // 加载配置状态
+        async function loadConfigStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/api/config`);
+                const status = await response.json();
+                
+                // 更新各平台状态和表单值
+                for (const [platform, data] of Object.entries(status)) {
+                    updateStatus(platform, data.configured);
+                    
+                    if (data.configured && data.config) {
+                        fillForm(platform, data.config);
+                    }
+                }
+            } catch (error) {
+                console.error('加载配置状态失败:', error);
+            }
+        }
+
+        // 填充表单
+        function fillForm(platform, config) {
+            switch (platform) {
+                case 'bilibili':
+                    document.getElementById('bilibili-sessdata').value = config.SESSDATA || '';
+                    document.getElementById('bilibili-bili_jct').value = config.bili_jct || '';
+                    document.getElementById('bilibili-buvid3').value = config.buvid3 || '';
+                    document.getElementById('bilibili-dedeuserid').value = config.DedeUserID || '';
+                    break;
+                case 'xiaohongshu':
+                    document.getElementById('xiaohongshu-cookie').value = config.cookie || '';
+                    break;
+                case 'douyin':
+                    document.getElementById('douyin-cookie').value = config.cookie || '';
+                    break;
+                case 'zhihu':
+                    // 解析 cookie 字符串
+                    const cookies = (config.cookie || '').split(';').reduce((acc, part) => {
+                        const [key, value] = part.trim().split('=');
+                        if (key) acc[key] = value || '';
+                        return acc;
+                    }, {});
+                    document.getElementById('zhihu-z_c0').value = cookies.z_c0 || '';
+                    document.getElementById('zhihu-xsrf').value = cookies._xsrf || '';
+                    document.getElementById('zhihu-d_c0').value = cookies.d_c0 || '';
+                    break;
+            }
+        }
+
+        // 保存 B 站配置
+        function saveBilibili() {
+            const sessdata = document.getElementById('bilibili-sessdata').value.trim();
+            const bili_jct = document.getElementById('bilibili-bili_jct').value.trim();
+            const buvid3 = document.getElementById('bilibili-buvid3').value.trim();
+            const dedeuserid = document.getElementById('bilibili-dedeuserid').value.trim();
+            
+            if (!sessdata || !bili_jct) {
+                showToast('请填写 SESSDATA 和 bili_jct', 'error');
+                return;
+            }
+            
+            saveConfig('bilibili', {
+                SESSDATA: sessdata,
+                bili_jct: bili_jct,
+                buvid3: buvid3 || '',
+                DedeUserID: dedeuserid || '',
+                ac_time_value: ''
+            });
+        }
+
+        function clearBilibili() {
+            document.getElementById('bilibili-sessdata').value = '';
+            document.getElementById('bilibili-bili_jct').value = '';
+            document.getElementById('bilibili-buvid3').value = '';
+            document.getElementById('bilibili-dedeuserid').value = '';
+            clearConfig('bilibili');
+        }
+
+        // 保存小红书配置
+        function saveXiaohongshu() {
+            const cookie = document.getElementById('xiaohongshu-cookie').value.trim();
+            
+            if (!cookie) {
+                showToast('请填写 Cookie 字符串', 'error');
+                return;
+            }
+            
+            saveConfig('xiaohongshu', { cookie: cookie });
+        }
+
+        function clearXiaohongshu() {
+            document.getElementById('xiaohongshu-cookie').value = '';
+            clearConfig('xiaohongshu');
+        }
+
+        // 保存抖音配置
+        function saveDouyin() {
+            const cookie = document.getElementById('douyin-cookie').value.trim();
+            saveConfig('douyin', { cookie: cookie || '' });
+        }
+
+        function clearDouyin() {
+            document.getElementById('douyin-cookie').value = '';
+            clearConfig('douyin');
+        }
+
+        // 保存知乎配置
+        function saveZhihu() {
+            const z_c0 = document.getElementById('zhihu-z_c0').value.trim();
+            const xsrf = document.getElementById('zhihu-xsrf').value.trim();
+            const d_c0 = document.getElementById('zhihu-d_c0').value.trim();
+            
+            if (!z_c0) {
+                showToast('搜索功能需要 z_c0', 'error');
+                return;
+            }
+            
+            let cookie = `z_c0=${z_c0}`;
+            if (xsrf) cookie += `; _xsrf=${xsrf}`;
+            if (d_c0) cookie += `; d_c0=${d_c0}`;
+            
+            saveConfig('zhihu', { cookie: cookie });
+        }
+
+        function clearZhihu() {
+            document.getElementById('zhihu-z_c0').value = '';
+            document.getElementById('zhihu-xsrf').value = '';
+            document.getElementById('zhihu-d_c0').value = '';
+            clearConfig('zhihu');
+        }
+
+        // 页面加载时获取配置状态
+        document.addEventListener('DOMContentLoaded', loadConfigStatus);
+    </script>
+</body>
+</html>
