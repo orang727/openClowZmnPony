@@ -21,8 +21,8 @@ devices/
 # 会话/补全缓存
 completions/
 
-# 记忆数据（隐私）
-memory/
+# 记忆数据（保留，避免重新配置）
+# memory/
 
 # Cookie 配置（到新电脑用配置页面重新配置）
 workspace/skills/*/config.json
