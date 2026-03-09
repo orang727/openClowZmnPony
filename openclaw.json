@@ -1,7 +1,7 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.2.26",
-    "lastTouchedAt": "2026-03-02T16:30:11.585Z"
+    "lastTouchedVersion": "2026.3.2",
+    "lastTouchedAt": "2026-03-09T01:17:20.136Z"
   },
   "wizard": {
     "lastRunAt": "2026-03-01T02:58:29.934Z",
@@ -19,6 +19,77 @@
   },
   "models": {
     "providers": {
+      "qwen": {
+        "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "apiKey": "<REDACTED>",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "qwen3.5-plus",
+            "name": "Qwen 3.5 Plus",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 16384
+          },
+          {
+            "id": "qwen-turbo",
+            "name": "Qwen Turbo",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.0002,
+              "output": 0.0006,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 100000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "qwen-plus",
+            "name": "Qwen Plus",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.0008,
+              "output": 0.002,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 16384
+          },
+          {
+            "id": "qwen-max",
+            "name": "Qwen Max",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.004,
+              "output": 0.012,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 32000,
+            "maxTokens": 4096
+          }
+        ]
+      },
       "minimax-portal": {
         "baseUrl": "https://api.minimaxi.com/anthropic",
         "apiKey": "minimax-oauth",
@@ -62,8 +133,9 @@
   },
   "agents": {
     "defaults": {
+      "timeoutSeconds": 600,
       "model": {
-        "primary": "minimax-portal/MiniMax-M2.5"
+        "primary": "qwen/qwen3.5-plus"
       },
       "models": {
         "minimax-portal/MiniMax-M2.1": {
@@ -71,29 +143,101 @@
         },
         "minimax-portal/MiniMax-M2.5": {
           "alias": "minimax-m2.5"
+        },
+        "qwen/qwen-turbo": {
+          "alias": "qwen-turbo"
+        },
+        "qwen/qwen-plus": {
+          "alias": "qwen-plus"
+        },
+        "qwen/qwen-max": {
+          "alias": "qwen-max"
         }
       },
-      "workspace": "C:\\Users\\Administrator\\.openclaw\\workspace",
+      "workspace": "/Users/zmnmini/.openclaw/workspace-daguanjia",
       "compaction": {
         "mode": "safeguard"
       }
     },
     "list": [
       {
+        "id": "daguanjia",
+        "name": "大管家",
+        "workspace": "/Users/zmnmini/.openclaw/workspace-daguanjia",
+        "agentDir": "/Users/zmnmini/.openclaw/agents/daguanjia/agent",
+        "model": "qwen/qwen3.5-plus"
+      },
+      {
+        "id": "erkang",
+        "name": "尔康",
+        "workspace": "/Users/zmnmini/.openclaw/workspace-erkang",
+        "agentDir": "/Users/zmnmini/.openclaw/agents/erkang/agent",
+        "model": "qwen/qwen3.5-plus"
+      },
+      {
+        "id": "xiaoma",
+        "name": "小马",
+        "workspace": "/Users/zmnmini/.openclaw/workspace-xiaoma",
+        "agentDir": "/Users/zmnmini/.openclaw/agents/xiaoma/agent",
+        "model": "qwen/qwen3.5-plus"
+      },
+      {
+        "id": "xiaokang",
+        "name": "小康",
+        "workspace": "/Users/zmnmini/.openclaw/workspace-xiaokang",
+        "agentDir": "/Users/zmnmini/.openclaw/agents/xiaokang/agent",
+        "model": "qwen/qwen3.5-plus"
+      },
+      {
+        "id": "jishu-expert",
+        "name": "技术专家",
+        "workspace": "/Users/zmnmini/.openclaw/workspace-expert",
+        "agentDir": "/Users/zmnmini/.openclaw/agents/expert/agent",
+        "model": "qwen/qwen3.5-plus"
+      },
+      {
         "id": "main"
       },
       {
-        "id": "expert",
-        "name": "expert",
-        "workspace": "C:\\Users\\Administrator\\.openclaw\\workspace-expert",
-        "agentDir": "C:\\Users\\Administrator\\.openclaw\\agents\\expert\\agent",
-        "model": "minimax-portal/MiniMax-M2.5"
+        "id": "xiaoi",
+        "name": "xiaoi",
+        "workspace": "/Users/zmnmini/.openclaw/workspace-daguanjia",
+        "agentDir": "/Users/zmnmini/.openclaw/agents/xiaoi",
+        "model": "qwen/qwen3.5-plus"
       }
     ]
   },
   "bindings": [
     {
-      "agentId": "expert",
+      "agentId": "daguanjia",
+      "match": {
+        "channel": "feishu",
+        "accountId": "daguanjia"
+      }
+    },
+    {
+      "agentId": "erkang",
+      "match": {
+        "channel": "feishu",
+        "accountId": "erkang"
+      }
+    },
+    {
+      "agentId": "xiaoma",
+      "match": {
+        "channel": "feishu",
+        "accountId": "xiaoma"
+      }
+    },
+    {
+      "agentId": "xiaokang",
+      "match": {
+        "channel": "feishu",
+        "accountId": "xiaokang"
+      }
+    },
+    {
+      "agentId": "jishu-expert",
       "match": {
         "channel": "feishu",
         "accountId": "expert"
@@ -133,15 +277,43 @@
       "accounts": {
         "default": {
           "enabled": true,
-          "appId": "cli_a907d72add78dcc5",
-          "appSecret": "b7IfExgINBR6FXocRfKfmcOyBBCO6WXy",
+          "appId": "<REDACTED>",
+          "appSecret": "<REDACTED>",
+          "domain": "feishu",
+          "groupPolicy": "open"
+        },
+        "daguanjia": {
+          "enabled": true,
+          "appId": "<REDACTED>",
+          "appSecret": "<REDACTED>",
+          "domain": "feishu",
+          "groupPolicy": "open"
+        },
+        "erkang": {
+          "enabled": true,
+          "appId": "<REDACTED>",
+          "appSecret": "<REDACTED>",
+          "domain": "feishu",
+          "groupPolicy": "open"
+        },
+        "xiaoma": {
+          "enabled": true,
+          "appId": "<REDACTED>",
+          "appSecret": "<REDACTED>",
+          "domain": "feishu",
+          "groupPolicy": "open"
+        },
+        "xiaokang": {
+          "enabled": true,
+          "appId": "<REDACTED>",
+          "appSecret": "<REDACTED>",
           "domain": "feishu",
           "groupPolicy": "open"
         },
         "expert": {
           "enabled": true,
-          "appId": "cli_a92f0541edb8dbb5",
-          "appSecret": "ajewY0Q6U3ODrS3ccFUsRhWxjadbf7Gc",
+          "appId": "<REDACTED>",
+          "appSecret": "<REDACTED>",
           "domain": "feishu",
           "groupPolicy": "open"
         }
@@ -154,7 +326,7 @@
     "bind": "loopback",
     "auth": {
       "mode": "token",
-      "token": "bb5ac5972b8945ad0b7222159a9a64c0905e917a7b0bd064"
+      "token": "<REDACTED>"
     },
     "tailscale": {
       "mode": "off",
@@ -179,6 +351,9 @@
         "enabled": true
       },
       "feishu": {
+        "enabled": true
+      },
+      "qwen-portal-auth": {
         "enabled": true
       }
     }

@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "id": "screen1",
+      "type": "frame",
+      "name": "S1 位置选择",
+      "x": 0,
+      "y": 0,
+      "width": 375,
+      "height": 812,
+      "fill": "#f8f9fc",
+      "children": [
+        {
+          "id": "header1",
+          "type": "frame",
+          "name": "Header",
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 140,
+          "fill": "#1e40af",
+          "children": [
+            {
+              "id": "backBtn1",
+              "type": "frame",
+              "name": "Back",
+              "x": 16,
+              "y": 54,
+              "width": 36,
+              "height": 36,
+              "fill": "rgba(255,255,255,0.2)",
+              "cornerRadius": 18
+            },
+            {
+              "id": "title1",
+              "type": "text",
+              "name": "Title",
+              "content": "选择漏点位置",
+              "x": 187,
+              "y": 60,
+              "fontSize": 20,
+              "fontWeight": 600,
+              "fill": "#ffffff",
+              "textAlign": "center",
+              "width": 200,
+              "height": 24
+            },
+            {
+              "id": "subtitle1",
+              "type": "text",
+              "name": "Subtitle",
+              "content": "请选择需要防水补漏的区域",
+              "x": 187,
+              "y": 90,
+              "fontSize": 13,
+              "fill": "rgba(255,255,255,0.8)",
+              "textAlign": "center",
+              "width": 250,
+              "height": 18
+            }
+          ]
+        },
+        {
+          "id": "progress1",
+          "type": "frame",
+          "name": "Progress",
+          "x": 0,
+          "y": 140,
+          "width": 375,
+          "height": 60,
+          "fill": "#ffffff",
+          "children": [
+            {"id": "s1_1", "type": "frame", "x": 20, "y": 14, "width": 26, "height": 26, "fill": "#1e40af", "cornerRadius": 13},
+            {"id": "s1_l1", "type": "text", "content": "位置", "x": 20, "y": 46, "fontSize": 10, "fill": "#1e40af", "fontWeight": 500},
+            {"id": "s1_2", "type": "frame", "x": 85, "y": 14, "width": 26, "height": 26, "fill": "#e5e7eb", "cornerRadius": 13},
+            {"id": "s1_l2", "type": "text", "content": "上传", "x": 85, "y": 46, "fontSize": 10, "fill": "#9ca3af"},
+            {"id": "s1_3", "type": "frame", "x": 150, "y": 14, "width": 26, "height": 26, "fill": "#e5e7eb", "cornerRadius": 13},
+            {"id": "s1_l3", "type": "text", "content": "分析", "x": 150, "y": 46, "fontSize": 10, "fill": "#9ca3af"},
+            {"id": "s1_4", "type": "frame", "x": 215, "y": 14, "width": 26, "height": 26, "fill": "#e5e7eb", "cornerRadius": 13},
+            {"id": "s1_l4", "type": "text", "content": "方案", "x": 215, "y": 46, "fontSize": 10, "fill": "#9ca3af"},
+            {"id": "s1_5", "type": "frame", "x": 280, "y": 14, "width": 26, "height": 26, "fill": "#e5e7eb", "cornerRadius": 13},
+            {"id": "s1_l5", "type": "text", "content": "价格", "x": 280, "y": 46, "fontSize": 10, "fill": "#9ca3af"},
+            {"id": "s1_6", "type": "frame", "x": 334, "y": 14, "width": 26, "height": 26, "fill": "#e5e7eb", "cornerRadius": 13},
+            {"id": "s1_l6", "type": "text", "content": "下单", "x": 334, "y": 46, "fontSize": 10, "fill": "#9ca3af"}
+          ]
+        },
+        {
+          "id": "content1",
+          "type": "frame",
+          "name": "Content",
+          "x": 16,
+          "y": 216,
+          "width": 343,
+          "height": 480,
+          "children": [
+            {
+              "id": "card1",
+              "type": "frame",
+              "name": "Location Grid",
+              "x": 0,
+              "y": 0,
+              "width": 343,
+              "height": 320,
+              "fill": "#ffffff",
+              "cornerRadius": 16,
+              "children": [
+                {"id": "cardTitle1", "type": "text", "content": "📍 漏点位置", "x": 20, "y": 20, "fontSize": 16, "fontWeight": 600, "fill": "#1f2937"},
+                {"id": "loc1", "type": "frame", "x": 20, "y": 60, "width": 96, "height": 100, "fill": "#eff6ff", "cornerRadius": 14, "stroke": "#1e40af", "strokeWidth": 2},
+                {"id": "loc1_icon", "type": "text", "content": "🚿", "x": 48, "y": 70, "fontSize": 32},
+                {"id": "loc1_name", "type": "text", "content": "卫生间", "x": 48, "y": 110, "fontSize": 13, "fontWeight": 500, "fill": "#374151", "textAlign": "center"},
+                {"id": "loc1_example", "type": "text", "content": "淋浴区/马桶", "x": 48, "y": 130, "fontSize": 11, "fill": "#9ca3af", "textAlign": "center"},
+                {"id": "loc2", "type": "frame", "x": 123, "y": 60, "width": 96, "height": 100, "fill": "#ffffff", "cornerRadius": 14, "stroke": "#e5e7eb", "strokeWidth": 2},
+                {"id": "loc2_icon", "type": "text", "content": "🍳", "x": 151, "y": 70, "fontSize": 32},
+                {"id": "loc2_name", "type": "text", "content": "厨房", "x": 151, "y": 110, "fontSize": 13, "fontWeight": 500, "fill": "#374151", "textAlign": "center"},
+                {"id": "loc2_example", "type": "text", "content": "水槽/地面", "x": 151, "y": 130, "fontSize": 11, "fill": "#9ca3af", "textAlign": "center"},
+                {"id": "loc3", "type": "frame", "x": 226, "y": 60, "width": 96, "height": 100, "fill": "#ffffff", "cornerRadius": 14, "stroke": "#e5e7eb", "strokeWidth": 2},
+                {"id": "loc3_icon", "type": "text", "content": "☀️", "x": 254, "y": 70, "fontSize": 32},
+                {"id": "loc3_name", "type": "text", "content": "阳台", "x": 254, "y": 110, "fontSize": 13, "fontWeight": 500, "fill": "#374151", "textAlign": "center"},
+                {"id": "loc3_example", "type": "text", "content": "洗衣区/窗户", "x": 254, "y": 130, "fontSize": 11, "fill": "#9ca3af", "textAlign": "center"},
+                {"id": "loc4", "type": "frame", "x": 20, "y": 170, "width": 96, "height": 100, "fill": "#ffffff", "cornerRadius": 14, "stroke": "#e5e7eb", "strokeWidth": 2},
+                {"id": "loc4_icon", "type": "text", "content": "🏠", "x": 48, "y": 180, "fontSize": 32},
+                {"id": "loc4_name", "type": "text", "content": "屋顶", "x": 48, "y": 220, "fontSize": 13, "fontWeight": 500, "fill": "#374151", "textAlign": "center"},
+                {"id": "loc4_example", "type": "text", "content": "天台/瓦面", "x": 48, "y": 240, "fontSize": 11, "fill": "#9ca3af", "textAlign": "center"},
+                {"id": "loc5", "type": "frame", "x": 123, "y": 170, "width": 96, "height": 100, "fill": "#ffffff", "cornerRadius": 14, "stroke": "#e5e7eb", "strokeWidth": 2},
+                {"id": "loc5_icon", "type": "text", "content": "🏢", "x": 151, "y": 180, "fontSize": 32},
+                {"id": "loc5_name", "type": "text", "content": "外墙", "x": 151, "y": 220, "fontSize": 13, "fontWeight": 500, "fill": "#374151", "textAlign": "center"},
+                {"id": "loc5_example", "type": "text", "content": "墙面/窗框", "x": 151, "y": 240, "fontSize": 11, "fill": "#9ca3af", "textAlign": "center"},
+                {"id": "loc6", "type": "frame", "x": 226, "y": 170, "width": 96, "height": 100, "fill": "#ffffff", "cornerRadius": 14, "stroke": "#e5e7eb", "strokeWidth": 2},
+                {"id": "loc6_icon", "type": "text", "content": "🪟", "x": 254, "y": 180, "fontSize": 32},
+                {"id": "loc6_name", "type": "text", "content": "飘窗", "x": 254, "y": 220, "fontSize": 13, "fontWeight": 500, "fill": "#374151", "textAlign": "center"},
+                {"id": "loc6_example", "type": "text", "content": "窗台/周边", "x": 254, "y": 240, "fontSize": 11, "fill": "#9ca3af", "textAlign": "center"}
+              ]
+            },
+            {
+              "id": "btnNext1",
+              "type": "frame",
+              "name": "Next Button",
+              "x": 0,
+              "y": 510,
+              "width": 343,
+              "height": 52,
+              "fill": "#1e40af",
+              "cornerRadius": 14,
+              "children": [
+                {"id": "btnNext1Text", "type": "text", "content": "下一步", "x": 171, "y": 26, "fontSize": 16, "fontWeight": 600, "fill": "#ffffff", "textAlign": "center"}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

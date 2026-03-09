@@ -1,5 +1,30 @@
 # HEARTBEAT.md
 
-# Keep this file empty (or with only comments) to skip heartbeat API calls.
+# 防水知识每日学习汇报
 
-# Add tasks below when you want the agent to check something periodically.
+## 每日17:00汇报任务
+
+当时间到达17:00时，执行以下操作：
+
+1. 统计当日学习次数（查看memory/learning.log）
+2. 整理学习内容摘要
+3. 通过feishu向用户发送学习汇报
+
+## 汇报格式
+
+```
+📚 防水知识学习日报
+📅 日期: XXXX-XX-XX
+
+✅ 今日学习: X次
+📖 学习内容:
+- [内容1]
+- [内容2]
+- ...
+
+💧 持续学习中...
+```
+
+## 状态记录
+
+记录最近一次汇报时间，避免重复发送。

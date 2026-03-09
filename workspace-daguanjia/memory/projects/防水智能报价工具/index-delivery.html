@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水智能报价工具 - 项目交付看板</title>
+    <style>
+        :root {
+            --primary: #1E40AF;
+            --primary-light: #3B82F6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .header h1 { font-size: 36px; margin-bottom: 12px; }
+        .header p { font-size: 16px; opacity: 0.9; }
+        .status-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        .doc-links { display: grid; gap: 12px; }
+        .doc-link {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: var(--gray-100);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .doc-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: var(--primary-light);
+        }
+        .doc-link .icon { font-size: 28px; margin-right: 16px; }
+        .doc-link .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 4px;
+        }
+        .doc-link .desc {
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+        .doc-link.featured {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+        .doc-link.featured .title,
+        .doc-link.featured .desc { color: white; }
+        .version-compare {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .version-card {
+            background: var(--gray-100);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .version-card .version { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+        .version-card .score { font-size: 32px; font-weight: 800; color: var(--success); margin-bottom: 12px; }
+        .version-card .tool { font-size: 14px; color: var(--gray-600); margin-bottom: 16px; }
+        .version-card .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .todo-list { display: grid; gap: 12px; }
+        .todo-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px;
+            background: var(--gray-100);
+            border-radius: 12px;
+            border-left: 4px solid var(--gray-200);
+        }
+        .todo-item.priority-high { border-left-color: var(--danger); }
+        .todo-item.priority-medium { border-left-color: var(--warning); }
+        .todo-item.priority-low { border-left-color: var(--success); }
+        .todo-item .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-400);
+            border-radius: 4px;
+            margin-right: 12px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .todo-item .checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .todo-content { flex: 1; }
+        .todo-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 4px;
+        }
+        .todo-desc {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+        .todo-meta {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .todo-tag {
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--gray-200);
+            color: var(--gray-600);
+        }
+        .todo-tag.due { background: #FEF3C7; color: #92400E; }
+        .todo-tag.owner { background: #DBEAFE; color: #1E40AF; }
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 防水智能报价工具</h1>
+            <p>IPD 项目交付看板</p>
+            <div class="status-badge">✅ Gate0 概念筛选完成</div>
+        </div>
+
+        <!-- UI 设计交付物 -->
+        <div class="section">
+            <div class="section-title">🎨 UI 设计交付物</div>
+            <div class="doc-links">
+                <a href="https://waterproof-quote-v3-final.surge.sh" target="_blank" class="doc-link featured">
+                    <span class="icon">✨</span>
+                    <div>
+                        <div class="title">UI v3.0 - 房屋业务风格（主链接）</div>
+                        <div class="desc">基于 34 张参考图，蓝色系专业设计 · 6 个核心页面</div>
+                    </div>
+                </a>
+                <a href="https://waterproof-quote-v2-final.surge.sh" target="_blank" class="doc-link">
+                    <span class="icon">🏆</span>
+                    <div>
+                        <div class="title">UI v2.0 - 推荐方案</div>
+                        <div class="desc">45/50 分 · 房屋业务风格 · 完整交互流程</div>
+                    </div>
+                </a>
+                <a href="https://waterproof-quote-ui-v1.surge.sh" target="_blank" class="doc-link">
+                    <span class="icon">📱</span>
+                    <div>
+                        <div class="title">UI v1.0 - 初版参考</div>
+                        <div class="desc">38/50 分 · 紫色系设计 · 10 个页面</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 版本对比 -->
+        <div class="section">
+            <div class="section-title">📊 版本对比</div>
+            <div class="version-compare">
+                <div class="version-card">
+                    <div class="version">v3.0</div>
+                    <div class="score">🆕</div>
+                    <div class="tool">HTML 原型</div>
+                    <div class="desc" style="font-size:13px;color:#6B7280;margin-bottom:12px;">房屋业务风格</div>
+                    <a href="https://waterproof-quote-v3-final.surge.sh" class="btn">查看设计</a>
+                </div>
+                <div class="version-card" style="border:2px solid var(--success);">
+                    <div class="version">v2.0</div>
+                    <div class="score">45/50</div>
+                    <div class="tool">HTML 原型</div>
+                    <div class="desc" style="font-size:13px;color:#6B7280;margin-bottom:12px;">推荐方案 ✅</div>
+                    <a href="https://waterproof-quote-v2-final.surge.sh" class="btn">查看设计</a>
+                </div>
+                <div class="version-card">
+                    <div class="version">v1.0</div>
+                    <div class="score">38/50</div>
+                    <div class="tool">HTML 原型</div>
+                    <div class="desc" style="font-size:13px;color:#6B7280;margin-bottom:12px;">初版参考</div>
+                    <a href="https://waterproof-quote-ui-v1.surge.sh" class="btn">查看设计</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 待办问题 -->
+        <div class="section">
+            <div class="section-title">📋 待办问题清单</div>
+            <div class="todo-list">
+                <div class="todo-item priority-high">
+                    <div class="checkbox"></div>
+                    <div class="todo-content">
+                        <div class="todo-title">UI 设计评审会议</div>
+                        <div class="todo-desc">组织全员评审 v2.0/v3.0 设计方案，确认最终版本</div>
+                        <div class="todo-meta">
+                            <span class="todo-tag due">📅 今日 15:00</span>
+                            <span class="todo-tag owner">👤 大管家</span>
+                            <span class="todo-tag">🔴 高优先级</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo-item priority-high">
+                    <div class="checkbox"></div>
+                    <div class="todo-content">
+                        <div class="todo-title">UI 设计确认</div>
+                        <div class="todo-desc">泊宁确认最终 UI 设计方案（v2.0 或 v3.0）</div>
+                        <div class="todo-meta">
+                            <span class="todo-tag due">📅 今日 18:00</span>
+                            <span class="todo-tag owner">👤 泊宁</span>
+                            <span class="todo-tag">🔴 高优先级</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo-item priority-medium">
+                    <div class="checkbox"></div>
+                    <div class="todo-content">
+                        <div class="todo-title">系数确认 Workshop</div>
+                        <div class="todo-desc">技术专家 + 大管家确认报价系数和计算公式</div>
+                        <div class="todo-meta">
+                            <span class="todo-tag due">📅 3/10 14:00</span>
+                            <span class="todo-tag owner">👤 技术专家 + 大管家</span>
+                            <span class="todo-tag">🟡 中优先级</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo-item priority-medium">
+                    <div class="checkbox"></div>
+                    <div class="todo-content">
+                        <div class="todo-title">PRD v2.4 更新</div>
+                        <div class="todo-desc">根据 UI 评审结果更新 PRD，补充交互说明</div>
+                        <div class="todo-meta">
+                            <span class="todo-tag due">📅 3/11 18:00</span>
+                            <span class="todo-tag owner">👤 小马</span>
+                            <span class="todo-tag">🟡 中优先级</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo-item priority-low">
+                    <div class="checkbox"></div>
+                    <div class="todo-content">
+                        <div class="todo-title">Pencil MCP 连接问题排查</div>
+                        <div class="todo-desc">确认 Pencil.app MCP 正确连接方式，解决 "app connection is required" 错误</div>
+                        <div class="todo-meta">
+                            <span class="todo-tag due">📅 本周内</span>
+                            <span class="todo-tag owner">👤 泊宁 + 小爱</span>
+                            <span class="todo-tag">🟢 低优先级</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo-item priority-low">
+                    <div class="checkbox"></div>
+                    <div class="todo-content">
+                        <div class="todo-title">前端组件库建设</div>
+                        <div class="todo-desc">基于确认的 UI 设计，建设前端组件库</div>
+                        <div class="todo-meta">
+                            <span class="todo-tag due">📅 2 周内</span>
+                            <span class="todo-tag owner">👤 小马</span>
+                            <span class="todo-tag">🟢 低优先级</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设计资源 -->
+        <div class="section">
+            <div class="section-title">📚 设计资源</div>
+            <div class="doc-links">
+                <a href="https://house-style-guide-v2.surge.sh" target="_blank" class="doc-link">
+                    <span class="icon">📖</span>
+                    <div>
+                        <div class="title">房屋业务交互设计手册</div>
+                        <div class="desc">基于 34 张参考图的设计规范 · 色彩/字体/组件/交互</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 项目信息 -->
+        <div class="section">
+            <div class="section-title">ℹ️ 项目信息</div>
+            <div style="font-size:14px;color:#6B7280;line-height:1.8;">
+                <p><strong>产品名称:</strong> 防水智能报价器</p>
+                <p><strong>产品形态:</strong> H5 页面（嵌入官网品牌站）</p>
+                <p><strong>目标用户:</strong> 有防水补漏需求的家庭业主</p>
+                <p><strong>核心价值:</strong> 用户拍照→AI 分析→面积估算→施工方案→价格区间→留资→生成工单</p>
+                <p style="margin-top:12px;"><strong>当前状态:</strong> Gate0 概念筛选完成，UI 设计已完成，待评审确认</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>最后更新：2026-03-09 12:26</p>
+            <p>大管家团队 · 防水智能报价工具项目组</p>
+        </div>
+    </div>
+</body>
+</html>

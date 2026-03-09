@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水智能报价系统 - UI 设计原型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .design-showcase {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .design-showcase h1 {
+            text-align: center;
+            color: #1a56db;
+            margin-bottom: 40px;
+            font-size: 32px;
+        }
+        
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+            gap: 40px;
+            justify-items: center;
+        }
+        
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #fff;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 12px solid #1a1a1a;
+            position: relative;
+        }
+        
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: #1a1a1a;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: #fff;
+        }
+        
+        /* 通用样式 */
+        .header {
+            background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+            color: white;
+            padding: 50px 20px 20px;
+            text-align: center;
+        }
+        
+        .header h2 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a56db;
+            margin-bottom: 12px;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 16px;
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .input-group {
+            margin-bottom: 16px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #f9fafb;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #1a56db;
+            background: #fff;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: #fff;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1a56db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .step-number.active {
+            background: #1a56db;
+        }
+        
+        .step-number.completed {
+            background: #10b981;
+        }
+        
+        .step-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+            text-align: center;
+        }
+        
+        .price-display {
+            background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .price-amount {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .price-amount small {
+            font-size: 24px;
+        }
+        
+        .price-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .price-detail:last-child {
+            border-bottom: none;
+        }
+        
+        .price-detail-label {
+            color: #6b7280;
+        }
+        
+        .price-detail-value {
+            font-weight: 600;
+            color: #1a56db;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-item {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+            color: #1e40af;
+            font-weight: 500;
+        }
+        
+        .case-list {
+            margin-top: 20px;
+        }
+        
+        .case-item {
+            display: flex;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .case-image {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        
+        .case-info {
+            flex: 1;
+            padding: 12px;
+        }
+        
+        .case-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .case-desc {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .case-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a56db;
+            margin-top: 8px;
+        }
+        
+        .option-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-card.selected {
+            border-color: #1a56db;
+            background: #eff6ff;
+        }
+        
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .option-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .option-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a56db;
+        }
+        
+        .option-desc {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        
+        .diagnosis-result {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .diagnosis-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        
+        .diagnosis-text {
+            font-size: 14px;
+            color: #78350f;
+        }
+        
+        .severity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .severity-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .severity-medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .severity-low {
+            background: #d1fae5;
+            color: #059669;
+        }
+        
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: #6b7280;
+        }
+        
+        .nav-item.active {
+            color: #1a56db;
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        
+        .page-label {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body>
+    <div class="design-showcase">
+        <h1>🏠 防水智能报价系统 - UI 设计原型</h1>
+        
+        <div class="pages-grid">
+            <!-- Page 1: 首页 -->
+            <div style="position: relative;">
+                <div class="page-label">1️⃣ 首页</div>
+                <div class="phone-frame">
+                    <div class="screen">
+                        <div class="header">
+                            <h2>🏠 防水智能报价</h2>
+                            <p>AI 智能诊断 · 透明报价 · 专业施工</p>
+                        </div>
+                        <div class="content">
+                            <div class="feature-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon">🔍</div>
+                                    <div class="feature-text">智能诊断</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">💰</div>
+                                    <div class="feature-text">透明报价</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">🛡️</div>
+                                    <div class="feature-text">质保保障</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">👨‍🔧</div>
+                                    <div class="feature-text">专业施工</div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="btn">🚀 开始智能报价</a>
+                            
+                            <div class="card" style="margin-top: 20px;">
+                                <div class="card-title">📋 服务案例</div>
+                                <div class="case-list">
+                                    <div class="case-item">
+                                        <div class="case-image">🏢</div>
+                                        <div class="case-info">
+                                            <div class="case-title">朝阳区卫生间防水</div>
+                                            <div class="case-desc">80㎡ · 整体重做</div>
+                                            <div class="case-price">¥4,800</div>
+                                        </div>
+                                    </div>
+                                    <div class="case-item">
+                                        <div class="case-image">🏠</div>
+                                        <div class="case-info">
+                                            <div class="case-title">海淀区屋顶防水</div>
+                                            <div class="case-desc">120㎡ · 局部修补</div>
+                                            <div class="case-price">¥6,200</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-nav">
+                            <div class="nav-item active">
+                                <div class="nav-icon">🏠</div>
+                                <div>首页</div>
+                            </div>
+                            <div class="nav-item">
+                                <div class="nav-icon">📋</div>
+                                <div>订单</div>
+                            </div>
+                            <div class="nav-item">
+                                <div class="nav-icon">👤</div>
+                                <div>我的</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page 2: 房屋信息录入页 -->
+            <div style="position: relative;">
+                <div class="page-label">2️⃣ 房屋信息</div>
+                <div class="phone-frame">
+                    <div class="screen">
+                        <div class="step-indicator">
+                            <div class="step">
+                                <div class="step-number completed">✓</div>
+                                <div class="step-label">开始</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number active">2</div>
+                                <div class="step-label">房屋信息</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-label">问题描述</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">4</div>
+                                <div class="step-label">获取报价</div>
+                            </div>
+                        </div>
+                        
+                        <div class="content">
+                            <div class="card">
+                                <div class="card-title">📍 房屋基本信息</div>
+                                <div class="input-group">
+                                    <label>房屋类型</label>
+                                    <select>
+                                        <option>普通住宅</option>
+                                        <option>别墅</option>
+                                        <option>公寓</option>
+                                        <option>商业空间</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>建筑面积 (㎡)</label>
+                                    <input type="number" placeholder="请输入建筑面积" value="80">
+                                </div>
+                                <div class="input-group">
+                                    <label>所在区域</label>
+                                    <select>
+                                        <option>朝阳区</option>
+                                        <option>海淀区</option>
+                                        <option>东城区</option>
+                                        <option>西城区</option>
+                                        <option>丰台区</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>房屋楼层</label>
+                                    <select>
+                                        <option>1 层</option>
+                                        <option>2-5 层</option>
+                                        <option>6-10 层</option>
+                                        <option>10 层以上</option>
+                                        <option>顶层</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="btn">下一步</a>
+                            <a href="#" class="btn btn-secondary">上一步</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page 3: 渗漏问题描述页 -->
+            <div style="position: relative;">
+                <div class="page-label">3️⃣ 问题描述</div>
+                <div class="phone-frame">
+                    <div class="screen">
+                        <div class="step-indicator">
+                            <div class="step">
+                                <div class="step-number completed">✓</div>
+                                <div class="step-label">开始</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number completed">✓</div>
+                                <div class="step-label">房屋信息</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number active">3</div>
+                                <div class="step-label">问题描述</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">4</div>
+                                <div class="step-label">获取报价</div>
+                            </div>
+                        </div>
+                        
+                        <div class="content">
+                            <div class="card">
+                                <div class="card-title">💧 渗漏问题详情</div>
+                                <div class="input-group">
+                                    <label>渗漏位置</label>
+                                    <select>
+                                        <option>卫生间</option>
+                                        <option>厨房</option>
+                                        <option>阳台</option>
+                                        <option>屋顶</option>
+                                        <option>外墙</option>
+                                        <option>地下室</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>问题类型</label>
+                                    <select>
+                                        <option>渗水</option>
+                                        <option>漏水</option>
+                                        <option>发霉</option>
+                                        <option>墙皮脱落</option>
+                                        <option>管道破裂</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>严重程度</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <span class="severity-badge severity-low">轻微</span>
+                                        <span class="severity-badge severity-medium">中等</span>
+                                        <span class="severity-badge severity-high">严重</span>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label>问题描述</label>
+                                    <input type="text" placeholder="请简单描述渗漏情况">
+                                </div>
+                                <div class="input-group">
+                                    <label>上传照片（可选）</label>
+                                    <div style="border: 2px dashed #e5e7eb; border-radius: 10px; padding: 30px; text-align: center; color: #6b7280;">
+                                        📷 点击上传现场照片
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="btn">开始 AI 诊断</a>
+                            <a href="#" class="btn btn-secondary">上一步</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page 4: 智能诊断结果页 -->
+            <div style="position: relative;">
+                <div class="page-label">4️⃣ 诊断结果</div>
+                <div class="phone-frame">
+                    <div class="screen">
+                        <div class="header">
+                            <h2>🔍 AI 智能诊断</h2>
+                            <p>分析完成</p>
+                        </div>
+                        
+                        <div class="content">
+                            <div class="diagnosis-result">
+                                <div class="diagnosis-title">⚠️ 诊断结果</div>
+                                <div class="diagnosis-text">
+                                    根据您描述的症状，可能是<strong>卫生间防水层老化破损</strong>导致的渗漏问题。
+                                    建议进行局部或整体防水重做。
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-title">📊 问题分析</div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">可能原因</span>
+                                    <span class="price-detail-value">防水层老化</span>
+                                </div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">影响范围</span>
+                                    <span class="price-detail-value">约 15㎡</span>
+                                </div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">建议方案</span>
+                                    <span class="price-detail-value">局部重做</span>
+                                </div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">预计工期</span>
+                                    <span class="price-detail-value">2-3 天</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-title">💡 专业建议</div>
+                                <p style="font-size: 14px; color: #6b7280; line-height: 1.8;">
+                                    1. 建议尽快处理，避免问题扩大<br>
+                                    2. 选择柔性防水涂料，适应墙体变形<br>
+                                    3. 施工后需进行 48 小时闭水试验
+                                </p>
+                            </div>
+                            
+                            <a href="#" class="btn">查看推荐方案</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page 5: 方案推荐页 -->
+            <div style="position: relative;">
+                <div class="page-label">5️⃣ 方案推荐</div>
+                <div class="phone-frame">
+                    <div class="screen">
+                        <div class="header">
+                            <h2>📋 施工方案推荐</h2>
+                            <p>为您精选 3 套方案</p>
+                        </div>
+                        
+                        <div class="content">
+                            <div class="option-card selected">
+                                <div class="option-header">
+                                    <span class="option-name">✅ 经济型方案</span>
+                                    <span class="option-price">¥2,800</span>
+                                </div>
+                                <div class="option-desc">
+                                    局部防水处理 · 国产材料 · 2 年质保
+                                </div>
+                            </div>
+                            
+                            <div class="option-card">
+                                <div class="option-header">
+                                    <span class="option-name">⭐ 标准型方案</span>
+                                    <span class="option-price">¥4,200</span>
+                                </div>
+                                <div class="option-desc">
+                                    整体防水重做 · 进口材料 · 5 年质保
+                                </div>
+                            </div>
+                            
+                            <div class="option-card">
+                                <div class="option-header">
+                                    <span class="option-name">🏆 尊享型方案</span>
+                                    <span class="option-price">¥6,800</span>
+                                </div>
+                                <div class="option-desc">
+                                    全屋防水升级 · 顶级材料 · 10 年质保 + 保险
+                                </div>
+                            </div>
+                            
+                            <div class="card" style="margin-top: 20px;">
+                                <div class="card-title">📝 方案包含</div>
+                                <p style="font-size: 14px; color: #6b7280; line-height: 1.8;">
+                                    ✓ 专业勘测评估<br>
+                                    ✓ 基层处理清理<br>
+                                    ✓ 防水涂料施工 (2-3 遍)<br>
+                                    ✓ 闭水试验验收<br>
+                                    ✓ 清理现场垃圾
+                                </p>
+                            </div>
+                            
+                            <a href="#" class="btn">确认方案 · 查看报价</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page 6: 报价明细页 -->
+            <div style="position: relative;">
+                <div class="page-label">6️⃣ 报价明细</div>
+                <div class="phone-frame">
+                    <div class="screen">
+                        <div class="header">
+                            <h2>💰 报价明细</h2>
+                            <p>标准型方案</p>
+                        </div>
+                        
+                        <div class="content">
+                            <div class="price-display">
+                                <div class="price-label">预估总价</div>
+                                <div class="price-amount"><small>¥</small>4,200</div>
+                                <div class="price-label">最终价格以现场勘测为准</div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-title">📊 费用明细</div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">材料费</span>
+                                    <span class="price-detail-value">¥1,800</span>
+                                </div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">人工费</span>
+                                    <span class="price-detail-value">¥1,600</span>
+                                </div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">辅料费</span>
+                                    <span class="price-detail-value">¥400</span>
+                                </div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">垃圾清运费</span>
+                                    <span class="price-detail-value">¥200</span>
+                                </div>
+                                <div class="price-detail" style="border-top: 2px solid #e5e7eb; margin-top: 8px; padding-top: 12px;">
+                                    <span class="price-detail-label" style="font-weight: 600;">优惠减免</span>
+                                    <span class="price-detail-value" style="color: #10b981;">-¥200</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-title">📅 施工安排</div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">预计工期</span>
+                                    <span class="price-detail-value">2-3 天</span>
+                                </div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">质保期限</span>
+                                    <span class="price-detail-value">5 年</span>
+                                </div>
+                                <div class="price-detail">
+                                    <span class="price-detail-label">最早可预约</span>
+                                    <span class="price-detail-value">明天</span>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="btn">确认下单</a>
+                            <a href="#" class="btn btn-secondary">联系客服</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

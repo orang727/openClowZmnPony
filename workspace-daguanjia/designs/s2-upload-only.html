@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S2 上传现场图片</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif; background: #1a1a2e; padding: 40px; display: flex; justify-content: center; }
+        .phone { width: 375px; height: 812px; background: #f8f9fc; border-radius: 44px; box-shadow: 0 25px 80px rgba(0,0,0,0.3); overflow: hidden; border: 14px solid #1a1a2e; position: relative; }
+        .phone::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 32px; background: #1a1a2e; border-radius: 0 0 24px 24px; }
+        .header { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 55px 20px 20px; }
+        .header h2 { font-size: 20px; font-weight: 600; text-align: center; }
+        .header p { font-size: 13px; opacity: 0.9; text-align: center; margin-top: 6px; }
+        .back-btn { position: absolute; left: 20px; top: 65px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .progress { display: flex; justify-content: space-between; padding: 20px 16px; background: #fff; }
+        .step { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .step-dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+        .step-dot.active { background: #1e40af; color: white; }
+        .step-dot.completed { background: #10b981; color: white; }
+        .step-dot { background: #e5e7eb; color: #9ca3af; }
+        .step-label { font-size: 10px; color: #9ca3af; margin-top: 6px; }
+        .step.active .step-label, .step.completed .step-label { color: #1e40af; font-weight: 500; }
+        .content { padding: 20px 16px; }
+        .tips { background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 10px; padding: 14px; margin-bottom: 16px; }
+        .tips-title { font-size: 13px; font-weight: 600; color: #92400e; margin-bottom: 8px; }
+        .tips-list { font-size: 12px; color: #78350f; line-height: 1.8; }
+        .card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+        .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+        .photo-item { aspect-ratio: 1; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; }
+        .photo-delete { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; background: #ef4444; color: white; border-radius: 50%; border: 2px solid #fff; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+        .upload-area { border: 2px dashed #3b82f6; border-radius: 16px; padding: 30px 20px; text-align: center; background: #f8fafc; }
+        .upload-icon { font-size: 48px; margin-bottom: 12px; }
+        .upload-text { font-size: 15px; color: #374151; font-weight: 500; }
+        .upload-hint { font-size: 12px; color: #9ca3af; margin-top: 8px; }
+        .bottom-area { padding: 16px; background: #fff; border-top: 1px solid #e5e7eb; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; }
+        .btn-secondary { background: #f3f4f6; color: #374151; }
+    </style>
+</head>
+<body>
+    <div class="phone">
+        <div class="header">
+            <div class="back-btn">←</div>
+            <h2>上传现场图片</h2>
+            <p>上传 1-5 张照片帮助 AI 更准确分析</p>
+        </div>
+        <div class="progress">
+            <div class="step completed"><div class="step-dot">✓</div><div class="step-label">位置</div></div>
+            <div class="step active"><div class="step-dot">2</div><div class="step-label">上传</div></div>
+            <div class="step"><div class="step-dot">3</div><div class="step-label">分析</div></div>
+            <div class="step"><div class="step-dot">4</div><div class="step-label">方案</div></div>
+            <div class="step"><div class="step-dot">5</div><div class="step-label">价格</div></div>
+            <div class="step"><div class="step-dot">6</div><div class="step-label">下单</div></div>
+        </div>
+        <div class="content">
+            <div class="tips">
+                <div class="tips-title">📸 拍摄建议</div>
+                <div class="tips-list">• 保持光线充足，避免过暗或过曝<br>• 正对渗漏区域，保持适当距离 (30-50cm)<br>• 拍摄清晰，避免模糊或手抖<br>• 多角度拍摄，展示渗漏全貌</div>
+            </div>
+            <div class="card">
+                <div class="card-title">📷 已上传 2 张</div>
+                <div class="photo-grid">
+                    <div class="photo-item">📸<div class="photo-delete">×</div></div>
+                    <div class="photo-item">📸<div class="photo-delete">×</div></div>
+                    <div class="photo-item" style="background: #f3f4f6; border: 2px dashed #d1d5db;">➕</div>
+                    <div class="photo-item" style="background: #f3f4f6; border: 2px dashed #d1d5db;">➕</div>
+                </div>
+                <div class="upload-area">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">点击添加照片</div>
+                    <div class="upload-hint">还可上传 3 张，支持拍照或相册</div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-area">
+            <button class="btn btn-secondary">上一步</button>
+            <button class="btn btn-primary">开始 AI 分析</button>
+        </div>
+    </div>
+</body>
+</html>

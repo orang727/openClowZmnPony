@@ -4,6 +4,13 @@ media/
 
 # 敏感信息
 credentials/
+identity/device-auth.json
+agents/*/agent/auth-profiles.json
+agents/*/agent/models.json
+agents/*/models.json
+
+# 真实配置（含密钥）
+openclaw.json.real
 
 # 备份文件
 *.bak
@@ -14,6 +21,9 @@ logs/
 delivery-queue/
 cron/
 update-check.json
+first-run-complete
+openclaw-manager.log
+openclaw-manager.pid
 
 # 设备信息
 devices/
@@ -21,9 +31,28 @@ devices/
 # 会话/补全缓存
 completions/
 
-# 记忆数据（保留，避免重新配置）
-# memory/
+# 子代理运行时
+subagents/
+
+# 依赖（通过 package.json 恢复）
+node_modules/
+bun.lock
+
+# macOS 系统文件
+.DS_Store
+**/.DS_Store
+
+# 会话数据（太大，包含对话记录）
+agents/*/sessions/*.jsonl
+agents/*/sessions/*.jsonl.bak
+agents/*/sessions/*.jsonl.deleted.*
+
+# 已删除的会话备份
+*.deleted.*
 
 # Cookie 配置（到新电脑用配置页面重新配置）
 workspace/skills/*/config.json
 workspace-expert/skills/*/config.json
+
+# Windows 路径错误文件
+agents/main/sessions/C:*

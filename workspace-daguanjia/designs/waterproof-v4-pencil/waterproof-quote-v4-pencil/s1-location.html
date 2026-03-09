@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水智能报价 v4.0 - S1 漏点位置选择</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+            background: #F8F9FC;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            margin: 0 auto;
+            background: #F8F9FC;
+            position: relative;
+        }
+        .header {
+            background: linear-gradient(135deg, #1E40AF, #3B82F6);
+            height: 140px;
+            padding: 20px;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            left: 16px;
+            top: 68px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        .title {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 13px;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .progress {
+            background: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 20px;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .step-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .step-dot.active {
+            background: #1E40AF;
+            color: white;
+        }
+        .step-dot.inactive {
+            background: #E5E7EB;
+            color: #9CA3AF;
+        }
+        .step-label {
+            font-size: 10px;
+        }
+        .step-label.active {
+            color: #1E40AF;
+            font-weight: 500;
+        }
+        .step-label.inactive {
+            color: #9CA3AF;
+        }
+        .content {
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 16px;
+        }
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .location-card {
+            background: white;
+            border-radius: 14px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid #E5E7EB;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .location-card.selected {
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+            border-color: #1E40AF;
+        }
+        .location-icon {
+            font-size: 32px;
+        }
+        .location-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            text-align: center;
+        }
+        .location-ex {
+            font-size: 11px;
+            color: #9CA3AF;
+            text-align: center;
+        }
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: white;
+            padding: 16px 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        .btn-primary {
+            width: 100%;
+            height: 52px;
+            background: linear-gradient(135deg, #1E40AF, #3B82F6);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="header">
+            <div class="back-btn">←</div>
+            <div class="title">选择漏点位置</div>
+            <div class="subtitle">请选择需要防水补漏的区域</div>
+        </div>
+        
+        <div class="progress">
+            <div class="step">
+                <div class="step-dot active">1</div>
+                <div class="step-label active">位置</div>
+            </div>
+            <div class="step">
+                <div class="step-dot inactive">2</div>
+                <div class="step-label inactive">上传</div>
+            </div>
+            <div class="step">
+                <div class="step-dot inactive">3</div>
+                <div class="step-label inactive">分析</div>
+            </div>
+            <div class="step">
+                <div class="step-dot inactive">4</div>
+                <div class="step-label inactive">方案</div>
+            </div>
+            <div class="step">
+                <div class="step-dot inactive">5</div>
+                <div class="step-label inactive">价格</div>
+            </div>
+            <div class="step">
+                <div class="step-dot inactive">6</div>
+                <div class="step-label inactive">下单</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="card">
+                <div class="card-title">📍 漏点位置</div>
+                <div class="location-grid">
+                    <div class="location-card selected">
+                        <div class="location-icon">🚿</div>
+                        <div class="location-name">卫生间</div>
+                        <div class="location-ex">淋浴区/马桶</div>
+                    </div>
+                    <div class="location-card">
+                        <div class="location-icon">🍳</div>
+                        <div class="location-name">厨房</div>
+                        <div class="location-ex">水槽/地面</div>
+                    </div>
+                    <div class="location-card">
+                        <div class="location-icon">☀️</div>
+                        <div class="location-name">阳台</div>
+                        <div class="location-ex">洗衣区/窗户</div>
+                    </div>
+                    <div class="location-card">
+                        <div class="location-icon">🏠</div>
+                        <div class="location-name">屋顶</div>
+                        <div class="location-ex">天台/瓦面</div>
+                    </div>
+                    <div class="location-card">
+                        <div class="location-icon">🏢</div>
+                        <div class="location-name">外墙</div>
+                        <div class="location-ex">墙面/窗框</div>
+                    </div>
+                    <div class="location-card">
+                        <div class="location-icon">🪟</div>
+                        <div class="location-name">飘窗</div>
+                        <div class="location-ex">窗台/周边</div>
+                    </div>
+                    <div class="location-card">
+                        <div class="location-icon">🏗️</div>
+                        <div class="location-name">地下室</div>
+                        <div class="location-ex">地面/墙面</div>
+                    </div>
+                    <div class="location-card">
+                        <div class="location-icon">❓</div>
+                        <div class="location-name">其他</div>
+                        <div class="location-ex">自定义位置</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottom-bar">
+            <button class="btn-primary">下一步</button>
+        </div>
+    </div>
+</body>
+</html>

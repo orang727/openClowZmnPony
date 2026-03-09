@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房屋业务色彩系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+            background: #F8F9FC;
+            padding: 40px 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; color: #1F2937; margin-bottom: 40px; font-size: 32px; }
+        h2 { color: #1F2937; margin: 40px 0 20px; font-size: 24px; }
+        
+        .color-section { margin-bottom: 40px; }
+        .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        
+        .color-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .color-preview { height: 120px; }
+        .color-info { padding: 16px; }
+        .color-name { font-size: 15px; font-weight: 600; color: #1F2937; margin-bottom: 4px; }
+        .color-hex { font-size: 13px; color: #6B7280; font-family: monospace; }
+        .color-usage { font-size: 12px; color: #9CA3AF; margin-top: 8px; }
+        
+        /* 主色系 */
+        .bg-primary { background: #1E40AF; }
+        .bg-primary-light { background: #3B82F6; }
+        .bg-primary-dark { background: #1E3A8A; }
+        .bg-gradient { background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%); }
+        
+        /* 功能色 */
+        .bg-success { background: #10B981; }
+        .bg-warning { background: #F59E0B; }
+        .bg-error { background: #EF4444; }
+        .bg-info { background: #0EA5E9; }
+        
+        /* 中性色 */
+        .bg-text-primary { background: #1F2937; }
+        .bg-text-secondary { background: #6B7280; }
+        .bg-text-placeholder { background: #9CA3AF; }
+        .bg-border { background: #E5E7EB; }
+        .bg-page { background: #F8F9FC; }
+        .bg-card { background: #FFFFFF; border: 1px solid #E5E7EB; }
+        
+        .copy-hint { 
+            text-align: center; 
+            color: #6B7280; 
+            margin-top: 40px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 房屋业务色彩系统</h1>
+        
+        <div class="color-section">
+            <h2>主色系 Primary</h2>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-preview bg-primary"></div>
+                    <div class="color-info">
+                        <div class="color-name">品牌蓝</div>
+                        <div class="color-hex">#1E40AF</div>
+                        <div class="color-usage">主按钮、品牌标识</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-primary-light"></div>
+                    <div class="color-info">
+                        <div class="color-name">品牌蓝浅</div>
+                        <div class="color-hex">#3B82F6</div>
+                        <div class="color-usage">次级按钮、链接</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-primary-dark"></div>
+                    <div class="color-info">
+                        <div class="color-name">品牌蓝深</div>
+                        <div class="color-hex">#1E3A8A</div>
+                        <div class="color-usage">悬浮状态、强调</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-gradient"></div>
+                    <div class="color-info">
+                        <div class="color-name">渐变</div>
+                        <div class="color-hex">#1E40AF → #3B82F6</div>
+                        <div class="color-usage">主视觉区、按钮</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="color-section">
+            <h2>功能色 Functional</h2>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-preview bg-success"></div>
+                    <div class="color-info">
+                        <div class="color-name">成功绿</div>
+                        <div class="color-hex">#10B981</div>
+                        <div class="color-usage">成功状态、完成标识</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-warning"></div>
+                    <div class="color-info">
+                        <div class="color-name">警告黄</div>
+                        <div class="color-hex">#F59E0B</div>
+                        <div class="color-usage">警告提示、中等风险</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-error"></div>
+                    <div class="color-info">
+                        <div class="color-name">危险红</div>
+                        <div class="color-hex">#EF4444</div>
+                        <div class="color-usage">错误状态、删除操作</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-info"></div>
+                    <div class="color-info">
+                        <div class="color-name">信息蓝</div>
+                        <div class="color-hex">#0EA5E9</div>
+                        <div class="color-usage">信息提示、帮助说明</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="color-section">
+            <h2>中性色 Neutral</h2>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-preview bg-text-primary"></div>
+                    <div class="color-info">
+                        <div class="color-name">标题黑</div>
+                        <div class="color-hex">#1F2937</div>
+                        <div class="color-usage">主标题、重要文本</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-text-secondary"></div>
+                    <div class="color-info">
+                        <div class="color-name">正文灰</div>
+                        <div class="color-hex">#6B7280</div>
+                        <div class="color-usage">正文内容</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-text-placeholder"></div>
+                    <div class="color-info">
+                        <div class="color-name">占位灰</div>
+                        <div class="color-hex">#9CA3AF</div>
+                        <div class="color-usage">占位符、禁用文本</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-border"></div>
+                    <div class="color-info">
+                        <div class="color-name">边框灰</div>
+                        <div class="color-hex">#E5E7EB</div>
+                        <div class="color-usage">边框、分割线</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-page"></div>
+                    <div class="color-info">
+                        <div class="color-name">页面背景</div>
+                        <div class="color-hex">#F8F9FC</div>
+                        <div class="color-usage">页面主背景</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview bg-card"></div>
+                    <div class="color-info">
+                        <div class="color-name">卡片背景</div>
+                        <div class="color-hex">#FFFFFF</div>
+                        <div class="color-usage">卡片、容器背景</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="copy-hint">💡 点击色卡可复制色值（需 JavaScript 支持）</p>
+    </div>
+</body>
+</html>

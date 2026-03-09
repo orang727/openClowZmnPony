@@ -1,0 +1,346 @@
+{
+  "agent:jishu-expert:main": {
+    "sessionId": "12676c6c-2393-4acd-9936-cfd18dccf6c8",
+    "updatedAt": 1772946010391,
+    "skillsSnapshot": {
+      "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\nWhen a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.\n\n<available_skills>\n  <skill>\n    <name>feishu-doc</name>\n    <description>Feishu document read/write operations. Activate when user mentions Feishu docs, cloud docs, or docx links.\n</description>\n    <location>~/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-doc/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>feishu-drive</name>\n    <description>Feishu cloud storage file management. Activate when user mentions cloud space, folders, drive.\n</description>\n    <location>~/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-drive/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>feishu-perm</name>\n    <description>Feishu permission management for documents and files. Activate when user mentions sharing, permissions, collaborators.\n</description>\n    <location>~/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-perm/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>feishu-wiki</name>\n    <description>Feishu knowledge base navigation. Activate when user mentions knowledge base, wiki, or wiki links.\n</description>\n    <location>~/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-wiki/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>clawhub</name>\n    <description>Use the ClawHub CLI to search, install, update, and publish agent skills from clawhub.com. Use when you need to fetch new skills on the fly, sync installed skills to latest or a specific version, or publish new/updated skill folders with the npm-installed clawhub CLI.</description>\n    <location>~/.bun/install/global/node_modules/openclaw/skills/clawhub/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>healthcheck</name>\n    <description>Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).</description>\n    <location>~/.bun/install/global/node_modules/openclaw/skills/healthcheck/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.</description>\n    <location>~/.openclaw/workspace-expert/skills/skill-creator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed.</description>\n    <location>~/.bun/install/global/node_modules/openclaw/skills/weather/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>find-skills</name>\n    <description>Helps users discover and install agent skills when they ask questions like &quot;how do I do X&quot;, &quot;find a skill for X&quot;, &quot;is there a skill that can...&quot;, or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.</description>\n    <location>~/.openclaw/workspace-expert/skills/find-skills/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>adaptive-reasoning</name>\n    <description>Automatically assess task complexity and adjust reasoning level. Triggers on every user message to evaluate whether extended thinking (reasoning mode) would improve response quality. Use this as a pre-processing step before answering complex questions.</description>\n    <location>~/.openclaw/workspace-expert/skills/adaptive-reasoning/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>Analysis</name>\n    <description>Run deep system health checks across workspace, config, skills, and integrations with prioritized findings and remediation.</description>\n    <location>~/.openclaw/workspace-expert/skills/analysis/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>auto-context</name>\n    <description>Automatically read relevant context before major actions. Loads TODO.md, roadmap.md, handoffs, task plans, and other project context files so the AI operates with full situational awareness. Use when starting a task, implementing a feature, refactoring, debugging, planning, or resuming a session.</description>\n    <location>~/.openclaw/workspace-expert/skills/auto-context/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>bilibili</name>\n    <description>B站视频信息获取工具。获取视频详情、评论、下载地址等。当用户提供B站视频链接或BV号时使用此技能。</description>\n    <location>~/.openclaw/workspace-expert/skills/bilibili/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>cn-search</name>\n    <description>国内网络搜索工具。当 web_search 不可用时，使用此技能通过百度/Bing 进行搜索。支持中英文搜索查询。</description>\n    <location>~/.openclaw/workspace-expert/skills/cn-search/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>context-budgeting</name>\n    <description>Manage and optimize OpenClaw context window usage via partitioning, pre-compression checkpointing, and information lifecycle management. Use when the session context is near its limit (&gt;80%), when the agent experiences &quot;memory loss&quot; after compaction, or when aiming to reduce token costs and latency for long-running tasks.</description>\n    <location>~/.openclaw/workspace-expert/skills/context-budgeting/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>context-driven-development</name>\n    <description>Treat project context as a managed artifact alongside code. Use structured context documents (product.md, tech-stack.md, workflow.md) to enable consistent AI interactions and team alignment. Essential for projects using AI-assisted development.\n</description>\n    <location>~/.openclaw/workspace-expert/skills/context-driven-development/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>context-recovery</name>\n    <description>Automatically recover working context after session compaction or when continuation is implied but context is missing. Works across Discord, Slack, Telegram, Signal, and other supported channels.</description>\n    <location>~/.openclaw/workspace-expert/skills/context-recovery/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>context-scope-tags</name>\n    <description>Use when: you chat across topics and want explicit boundaries to prevent topic bleed.\nTags: [ISO], [SCOPE], [GLOBAL], [NOMEM], [REM]. (Memory tags are signals; persistence depends on your agent&apos;s memory backend.)\nDon&apos;t use when: you prefer free-form conversation where prior context carries over automatically.\nOutput: a copy/paste tag cheat sheet + routing rules for how to treat the current message.\n</description>\n    <location>~/.openclaw/workspace-expert/skills/context-scope-tags/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>Data Analysis</name>\n    <description>Turn raw data into decisions with statistical rigor, proper methodology, and awareness of analytical pitfalls.</description>\n    <location>~/.openclaw/workspace-expert/skills/data-analysis/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>deep-thinking</name>\n    <description>Comprehensive deep reasoning framework that guides systematic, thorough thinking for complex tasks. Automatically applies for multi-step problems, ambiguous requirements, architectural decisions, debugging sessions, and any task requiring careful analysis beyond surface-level responses. Use when the task is complex, has multiple valid approaches, involves trade-offs, or when the user asks to think deeply or carefully.</description>\n    <location>~/.openclaw/workspace-expert/skills/deep-thinking/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>douyin</name>\n    <description>抖音视频信息获取工具。解析抖音视频链接获取视频详情。当用户提供抖音视频链接时使用此技能。</description>\n    <location>~/.openclaw/workspace-expert/skills/douyin/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>interview-analysis</name>\n    <description>Deep interview analysis using dynamic expert routing. Automatically selects top domain thinkers based on role type to distinguish genuine capability from performance, identifying Battle Scars over Methodology Recitation. Applicable to any professional position including product management, engineering, design, operations, sales, and data science.</description>\n    <location>~/.openclaw/workspace-expert/skills/interview-analysis/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>pain-point-finder</name>\n    <description>Discover pain points, frustrations, and unmet needs on Reddit using PullPush API. No API keys required. Use to find startup ideas backed by real user complaints.</description>\n    <location>~/.openclaw/workspace-expert/skills/pain-point-finder/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>reasoning-personas</name>\n    <description>Activate different high-agency thinking modes to unlock better reasoning. Use when brainstorming, reviewing plans, making decisions, or when user says &apos;put on your Gonzo hat&apos;, &apos;devil&apos;s advocate this&apos;, or &apos;what precedents apply?&apos;</description>\n    <location>~/.openclaw/workspace-expert/skills/reasoning-personas/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>requirement-assessment</name>\n    <description>需求细化与工时评估技能。接收用户需求（文本或截图），主动询问澄清问题，分析需求合理性，输出合并的需求清单 + 工时评估表，并创建飞书 Bitable 多维表。适用于项目立项、需求评审、工时估算场景。</description>\n    <location>~/.openclaw/workspace-expert/skills/requirement-assessment/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>UX Researcher</name>\n    <description>Generate user personas, pain points, journey maps, and UX recommendations without conducting interviews.</description>\n    <location>~/.openclaw/workspace-expert/skills/ux-researcher/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>waterproof-monitor</name>\n    <description>防水补漏数据监控分析。用于每天自动获取抖音、小红书平台上&quot;防水补漏&quot;相关内容，分析受欢迎程度和评论，并生成报告推送给用户。当用户需要监控防水补漏行业数据、分析社交媒体热点、或设置定时数据报告时触发此技能。</description>\n    <location>~/.openclaw/workspace-expert/skills/waterproof-monitor/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>xiaohongshu</name>\n    <description>小红书内容获取工具。获取推荐笔记列表。当用户需要小红书内容时使用此技能。</description>\n    <location>~/.openclaw/workspace-expert/skills/xiaohongshu/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>zhihu</name>\n    <description>知乎内容获取工具。搜索知乎、获取热门回答、问题详情等。当用户需要知乎内容时使用此技能。</description>\n    <location>~/.openclaw/workspace-expert/skills/zhihu/SKILL.md</location>\n  </skill>\n</available_skills>",
+      "skills": [
+        {
+          "name": "feishu-doc"
+        },
+        {
+          "name": "feishu-drive"
+        },
+        {
+          "name": "feishu-perm"
+        },
+        {
+          "name": "feishu-wiki"
+        },
+        {
+          "name": "clawhub",
+          "requiredEnv": []
+        },
+        {
+          "name": "healthcheck"
+        },
+        {
+          "name": "skill-creator"
+        },
+        {
+          "name": "weather",
+          "requiredEnv": []
+        },
+        {
+          "name": "find-skills"
+        },
+        {
+          "name": "adaptive-reasoning"
+        },
+        {
+          "name": "Analysis"
+        },
+        {
+          "name": "auto-context"
+        },
+        {
+          "name": "bilibili"
+        },
+        {
+          "name": "cn-search"
+        },
+        {
+          "name": "context-budgeting"
+        },
+        {
+          "name": "context-driven-development"
+        },
+        {
+          "name": "context-recovery"
+        },
+        {
+          "name": "context-scope-tags"
+        },
+        {
+          "name": "Data Analysis"
+        },
+        {
+          "name": "deep-thinking"
+        },
+        {
+          "name": "douyin"
+        },
+        {
+          "name": "interview-analysis"
+        },
+        {
+          "name": "pain-point-finder"
+        },
+        {
+          "name": "reasoning-personas"
+        },
+        {
+          "name": "requirement-assessment"
+        },
+        {
+          "name": "UX Researcher"
+        },
+        {
+          "name": "waterproof-monitor"
+        },
+        {
+          "name": "xiaohongshu"
+        },
+        {
+          "name": "zhihu"
+        }
+      ],
+      "resolvedSkills": [
+        {
+          "name": "feishu-doc",
+          "description": "Feishu document read/write operations. Activate when user mentions Feishu docs, cloud docs, or docx links.\n",
+          "filePath": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-doc/SKILL.md",
+          "baseDir": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-doc",
+          "source": "openclaw-extra",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "feishu-drive",
+          "description": "Feishu cloud storage file management. Activate when user mentions cloud space, folders, drive.\n",
+          "filePath": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-drive/SKILL.md",
+          "baseDir": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-drive",
+          "source": "openclaw-extra",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "feishu-perm",
+          "description": "Feishu permission management for documents and files. Activate when user mentions sharing, permissions, collaborators.\n",
+          "filePath": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-perm/SKILL.md",
+          "baseDir": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-perm",
+          "source": "openclaw-extra",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "feishu-wiki",
+          "description": "Feishu knowledge base navigation. Activate when user mentions knowledge base, wiki, or wiki links.\n",
+          "filePath": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-wiki/SKILL.md",
+          "baseDir": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/extensions/feishu/skills/feishu-wiki",
+          "source": "openclaw-extra",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "clawhub",
+          "description": "Use the ClawHub CLI to search, install, update, and publish agent skills from clawhub.com. Use when you need to fetch new skills on the fly, sync installed skills to latest or a specific version, or publish new/updated skill folders with the npm-installed clawhub CLI.",
+          "filePath": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/skills/clawhub/SKILL.md",
+          "baseDir": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/skills/clawhub",
+          "source": "openclaw-bundled",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "healthcheck",
+          "description": "Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).",
+          "filePath": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/skills/healthcheck/SKILL.md",
+          "baseDir": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/skills/healthcheck",
+          "source": "openclaw-bundled",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "skill-creator",
+          "description": "Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/skill-creator/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/skill-creator",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "weather",
+          "description": "Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed.",
+          "filePath": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/skills/weather/SKILL.md",
+          "baseDir": "/Users/zmnmini/.bun/install/global/node_modules/openclaw/skills/weather",
+          "source": "openclaw-bundled",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "find-skills",
+          "description": "Helps users discover and install agent skills when they ask questions like \"how do I do X\", \"find a skill for X\", \"is there a skill that can...\", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/find-skills/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/find-skills",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "adaptive-reasoning",
+          "description": "Automatically assess task complexity and adjust reasoning level. Triggers on every user message to evaluate whether extended thinking (reasoning mode) would improve response quality. Use this as a pre-processing step before answering complex questions.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/adaptive-reasoning/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/adaptive-reasoning",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "Analysis",
+          "description": "Run deep system health checks across workspace, config, skills, and integrations with prioritized findings and remediation.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/analysis/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/analysis",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "auto-context",
+          "description": "Automatically read relevant context before major actions. Loads TODO.md, roadmap.md, handoffs, task plans, and other project context files so the AI operates with full situational awareness. Use when starting a task, implementing a feature, refactoring, debugging, planning, or resuming a session.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/auto-context/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/auto-context",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "bilibili",
+          "description": "B站视频信息获取工具。获取视频详情、评论、下载地址等。当用户提供B站视频链接或BV号时使用此技能。",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/bilibili/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/bilibili",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "cn-search",
+          "description": "国内网络搜索工具。当 web_search 不可用时，使用此技能通过百度/Bing 进行搜索。支持中英文搜索查询。",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/cn-search/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/cn-search",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "context-budgeting",
+          "description": "Manage and optimize OpenClaw context window usage via partitioning, pre-compression checkpointing, and information lifecycle management. Use when the session context is near its limit (>80%), when the agent experiences \"memory loss\" after compaction, or when aiming to reduce token costs and latency for long-running tasks.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/context-budgeting/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/context-budgeting",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "context-driven-development",
+          "description": "Treat project context as a managed artifact alongside code. Use structured context documents (product.md, tech-stack.md, workflow.md) to enable consistent AI interactions and team alignment. Essential for projects using AI-assisted development.\n",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/context-driven-development/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/context-driven-development",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "context-recovery",
+          "description": "Automatically recover working context after session compaction or when continuation is implied but context is missing. Works across Discord, Slack, Telegram, Signal, and other supported channels.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/context-recovery/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/context-recovery",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "context-scope-tags",
+          "description": "Use when: you chat across topics and want explicit boundaries to prevent topic bleed.\nTags: [ISO], [SCOPE], [GLOBAL], [NOMEM], [REM]. (Memory tags are signals; persistence depends on your agent's memory backend.)\nDon't use when: you prefer free-form conversation where prior context carries over automatically.\nOutput: a copy/paste tag cheat sheet + routing rules for how to treat the current message.\n",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/context-scope-tags/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/context-scope-tags",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "Data Analysis",
+          "description": "Turn raw data into decisions with statistical rigor, proper methodology, and awareness of analytical pitfalls.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/data-analysis/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/data-analysis",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "deep-thinking",
+          "description": "Comprehensive deep reasoning framework that guides systematic, thorough thinking for complex tasks. Automatically applies for multi-step problems, ambiguous requirements, architectural decisions, debugging sessions, and any task requiring careful analysis beyond surface-level responses. Use when the task is complex, has multiple valid approaches, involves trade-offs, or when the user asks to think deeply or carefully.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/deep-thinking/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/deep-thinking",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "douyin",
+          "description": "抖音视频信息获取工具。解析抖音视频链接获取视频详情。当用户提供抖音视频链接时使用此技能。",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/douyin/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/douyin",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "interview-analysis",
+          "description": "Deep interview analysis using dynamic expert routing. Automatically selects top domain thinkers based on role type to distinguish genuine capability from performance, identifying Battle Scars over Methodology Recitation. Applicable to any professional position including product management, engineering, design, operations, sales, and data science.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/interview-analysis/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/interview-analysis",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "pain-point-finder",
+          "description": "Discover pain points, frustrations, and unmet needs on Reddit using PullPush API. No API keys required. Use to find startup ideas backed by real user complaints.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/pain-point-finder/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/pain-point-finder",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "reasoning-personas",
+          "description": "Activate different high-agency thinking modes to unlock better reasoning. Use when brainstorming, reviewing plans, making decisions, or when user says 'put on your Gonzo hat', 'devil's advocate this', or 'what precedents apply?'",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/reasoning-personas/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/reasoning-personas",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "requirement-assessment",
+          "description": "需求细化与工时评估技能。接收用户需求（文本或截图），主动询问澄清问题，分析需求合理性，输出合并的需求清单 + 工时评估表，并创建飞书 Bitable 多维表。适用于项目立项、需求评审、工时估算场景。",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/requirement-assessment/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/requirement-assessment",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "UX Researcher",
+          "description": "Generate user personas, pain points, journey maps, and UX recommendations without conducting interviews.",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/ux-researcher/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/ux-researcher",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "waterproof-monitor",
+          "description": "防水补漏数据监控分析。用于每天自动获取抖音、小红书平台上\"防水补漏\"相关内容，分析受欢迎程度和评论，并生成报告推送给用户。当用户需要监控防水补漏行业数据、分析社交媒体热点、或设置定时数据报告时触发此技能。",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/waterproof-monitor/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/waterproof-monitor",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "xiaohongshu",
+          "description": "小红书内容获取工具。获取推荐笔记列表。当用户需要小红书内容时使用此技能。",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/xiaohongshu/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/xiaohongshu",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        },
+        {
+          "name": "zhihu",
+          "description": "知乎内容获取工具。搜索知乎、获取热门回答、问题详情等。当用户需要知乎内容时使用此技能。",
+          "filePath": "/Users/zmnmini/.openclaw/workspace-expert/skills/zhihu/SKILL.md",
+          "baseDir": "/Users/zmnmini/.openclaw/workspace-expert/skills/zhihu",
+          "source": "openclaw-workspace",
+          "disableModelInvocation": false
+        }
+      ],
+      "version": 0
+    },
+    "sessionFile": "/Users/zmnmini/.openclaw/agents/jishu-expert/sessions/12676c6c-2393-4acd-9936-cfd18dccf6c8.jsonl",
+    "contextTokens": 200000,
+    "modelProvider": "qwen",
+    "model": "qwen3.5-plus",
+    "abortedLastRun": false,
+    "inputTokens": 46350,
+    "outputTokens": 3345,
+    "totalTokens": 26026,
+    "totalTokensFresh": true,
+    "cacheRead": 0,
+    "cacheWrite": 0
+  }
+}

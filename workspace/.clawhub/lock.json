@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "skills": {
+    "requirement-assessment": {
+      "version": "1.0.0",
+      "installedAt": 1772800951425
+    },
+    "find-skills": {
+      "version": "0.1.0",
+      "installedAt": 1772801770071
+    },
+    "data-analysis": {
+      "version": "1.0.0",
+      "installedAt": 1772802056152
+    },
+    "context-recovery": {
+      "version": "1.2.2",
+      "installedAt": 1772802083771
+    },
+    "analysis": {
+      "version": "1.0.0",
+      "installedAt": 1772802092560
+    },
+    "ux-researcher": {
+      "version": "1.0.0",
+      "installedAt": 1772802100690
+    },
+    "context-budgeting": {
+      "version": "1.0.0",
+      "installedAt": 1772802107199
+    },
+    "pain-point-finder": {
+      "version": "1.0.0",
+      "installedAt": 1772802118799
+    },
+    "deep-thinking": {
+      "version": "1.0.0",
+      "installedAt": 1772802130003
+    },
+    "auto-context": {
+      "version": "1.0.0",
+      "installedAt": 1772802153938
+    },
+    "interview-analysis": {
+      "version": "1.0.0",
+      "installedAt": 1772802168866
+    },
+    "reasoning-personas": {
+      "version": "1.0.0",
+      "installedAt": 1772802177570
+    },
+    "context-driven-development": {
+      "version": "1.0.0",
+      "installedAt": 1772802186816
+    },
+    "context-scope-tags": {
+      "version": "0.2.0",
+      "installedAt": 1772802195750
+    },
+    "adaptive-reasoning": {
+      "version": "1.0.0",
+      "installedAt": 1772802224223
+    },
+    "reasoning-answer": {
+      "version": "0.1.0",
+      "installedAt": 1772802235155
+    }
+  }
+}

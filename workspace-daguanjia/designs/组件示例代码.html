@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房屋业务组件示例</title>
+    <style>
+        :root {
+            --primary: #1E40AF;
+            --primary-light: #3B82F6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --text-placeholder: #9CA3AF;
+            --border: #E5E7EB;
+            --bg-page: #F8F9FC;
+            --bg-card: #FFFFFF;
+            
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 20px;
+            
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 2px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.12);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+        
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        h1 { text-align: center; color: var(--text-primary); margin-bottom: 40px; font-size: 32px; }
+        h2 { color: var(--text-primary); margin: 40px 0 20px; font-size: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        h3 { color: var(--text-primary); margin: 24px 0 16px; font-size: 18px; }
+        
+        .section { margin-bottom: 40px; }
+        
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #FFFFFF;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary {
+            background: #F3F4F6;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #E5E7EB;
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-ghost:hover {
+            background: rgba(30, 64, 175, 0.05);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: #FFFFFF;
+        }
+        
+        .btn-error {
+            background: var(--error);
+            color: #FFFFFF;
+        }
+        
+        .btn:disabled {
+            background: #D1D5DB;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* 输入框样式 */
+        .input-group {
+            margin-bottom: 16px;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .required {
+            color: var(--error);
+            margin-left: 4px;
+        }
+        
+        .input {
+            width: 100%;
+            height: 52px;
+            padding: 0 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            background: #FFFFFF;
+            transition: all 0.2s;
+        }
+        
+        .input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .input::placeholder {
+            color: var(--text-placeholder);
+        }
+        
+        .input-error {
+            border-color: var(--error);
+        }
+        
+        .input-error:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+        
+        .error-message {
+            font-size: 12px;
+            color: var(--error);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .card-clickable {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .card-clickable:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-clickable:active {
+            transform: scale(0.98);
+        }
+        
+        .card-selected {
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        }
+        
+        /* 列表样式 */
+        .list {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border-bottom: 1px solid #F3F4F6;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-item:hover {
+            background: #F9FAFB;
+        }
+        
+        .list-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: var(--spacing-lg);
+        }
+        
+        .list-content {
+            flex: 1;
+        }
+        
+        .list-title {
+            font-size: 15px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .list-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .list-arrow {
+            color: var(--border);
+            font-size: 18px;
+        }
+        
+        /* 状态组件 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .empty-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFFFFF;
+            padding: 14px 24px;
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .toast.show {
+            display: block;
+            animation: toast-fade 2s ease-in-out;
+        }
+        
+        @keyframes toast-fade {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        /* Loading */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 价格展示 */
+        .price-display {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #FFFFFF;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: var(--radius-xl);
+            margin-bottom: 20px;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .price-amount {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .price-amount small {
+            font-size: 24px;
+        }
+        
+        .price-note {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 房屋业务组件示例</h1>
+        
+        <div class="section">
+            <h2>按钮 Buttons</h2>
+            <button class="btn btn-primary">主要按钮</button>
+            <button class="btn btn-secondary">次要按钮</button>
+            <button class="btn btn-ghost">幽灵按钮</button>
+            <br>
+            <button class="btn btn-success">成功按钮</button>
+            <button class="btn btn-error">危险按钮</button>
+            <br>
+            <button class="btn btn-primary" disabled>禁用状态</button>
+        </div>
+        
+        <div class="section">
+            <h2>输入框 Input Fields</h2>
+            <div class="card">
+                <div class="input-group">
+                    <label class="input-label">姓名 <span class="required">*</span></label>
+                    <input type="text" class="input" placeholder="请输入您的姓名">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">手机号 <span class="required">*</span></label>
+                    <input type="tel" class="input" placeholder="请输入手机号码">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">邮箱</label>
+                    <input type="email" class="input input-error" placeholder="请输入邮箱地址" value="invalid@email">
+                    <div class="error-message">⚠️ 请输入有效的邮箱地址</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>卡片 Cards</h2>
+            <div class="card">
+                <h3 class="card-title">标准卡片</h3>
+                <p style="color: var(--text-secondary);">这是一个标准卡片容器，用于包裹内容。</p>
+            </div>
+            
+            <div class="card card-clickable">
+                <h3 class="card-title">可点击卡片</h3>
+                <p style="color: var(--text-secondary);">点击时有缩放反馈效果。</p>
+            </div>
+            
+            <div class="card card-selected">
+                <h3 class="card-title">选中状态卡片</h3>
+                <p style="color: var(--text-secondary);">蓝色边框和渐变背景表示已选中。</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>列表 List</h2>
+            <div class="list">
+                <div class="list-item">
+                    <div class="list-icon">🚿</div>
+                    <div class="list-content">
+                        <div class="list-title">卫生间防水</div>
+                        <div class="list-desc">淋浴区/马桶区域</div>
+                    </div>
+                    <div class="list-arrow">›</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-icon">🍳</div>
+                    <div class="list-content">
+                        <div class="list-title">厨房防水</div>
+                        <div class="list-desc">水槽/地面区域</div>
+                    </div>
+                    <div class="list-arrow">›</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-icon">☀️</div>
+                    <div class="list-content">
+                        <div class="list-title">阳台防水</div>
+                        <div class="list-desc">洗衣区/窗户区域</div>
+                    </div>
+                    <div class="list-arrow">›</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>价格展示 Price Display</h2>
+            <div class="price-display">
+                <div class="price-label">预估价格区间</div>
+                <div class="price-amount"><small>¥</small>1,200<small>-</small>1,800</div>
+                <div class="price-note">最终价格以师傅上门勘测为准</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>空状态 Empty State</h2>
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <div class="empty-title">暂无订单</div>
+                    <div class="empty-desc">您还没有任何服务订单<br>点击下方按钮开始预约</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>加载状态 Loading</h2>
+            <div class="card">
+                <div class="loading-spinner"></div>
+                <div style="text-align: center; color: var(--text-secondary); font-size: 14px;">正在加载数据...</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>交互演示</h2>
+            <button class="btn btn-primary" onclick="showToast('操作成功！')">显示 Toast 提示</button>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">✅ 操作成功！</div>
+    
+    <script>
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = '✅ ' + message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // 输入框交互
+        document.querySelectorAll('.input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.classList.remove('input-error');
+                const errorMsg = input.parentElement.querySelector('.error-message');
+                if (errorMsg) errorMsg.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

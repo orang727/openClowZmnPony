@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水智能报价 v4.0 - S6 留资下单</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #F8F9FC; }
+        .phone-frame { width: 375px; height: 812px; margin: 0 auto; background: #F8F9FC; position: relative; }
+        .header { background: linear-gradient(135deg, #1E40AF, #3B82F6); height: 140px; padding: 20px; position: relative; }
+        .back-btn { position: absolute; left: 16px; top: 68px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+        .title { color: white; font-size: 20px; font-weight: 600; text-align: center; margin-top: 40px; }
+        .subtitle { color: rgba(255,255,255,0.9); font-size: 13px; text-align: center; margin-top: 8px; }
+        .progress { background: white; height: 60px; display: flex; align-items: center; justify-content: space-around; padding: 0 20px; }
+        .step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .step-dot { width: 26px; height: 26px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+        .step-dot.active { background: #1E40AF; color: white; }
+        .step-dot.inactive { background: #E5E7EB; color: #9CA3AF; }
+        .step-label.active { color: #1E40AF; font-weight: 500; font-size: 10px; }
+        .step-label.inactive { color: #9CA3AF; font-size: 10px; }
+        .content { padding: 20px; padding-bottom: 100px; }
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 600; color: #1F2937; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 8px; }
+        .form-input { width: 100%; height: 48px; border: 1px solid #E5E7EB; border-radius: 12px; padding: 0 16px; font-size: 15px; outline: none; transition: all 0.2s; }
+        .form-input:focus { border-color: #3B82F6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .form-input::placeholder { color: #9CA3AF; }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; }
+        .checkbox { width: 20px; height: 20px; border: 2px solid #E5E7EB; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .checkbox.checked { background: #1E40AF; border-color: #1E40AF; color: white; }
+        .checkbox-label { font-size: 13px; color: #6B7280; line-height: 1.4; }
+        .checkbox-label a { color: #3B82F6; }
+        .bottom-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 375px; background: white; padding: 16px 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .btn-primary { width: 100%; height: 52px; background: linear-gradient(135deg, #1E40AF, #3B82F6); border: none; border-radius: 14px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .order-summary { background: #EFF6FF; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .summary-row:last-child { margin-bottom: 0; padding-top: 8px; border-top: 1px solid #DBEAFE; font-weight: 600; color: #1E40AF; }
+        .summary-label { color: #6B7280; }
+        .summary-value { color: #1E40AF; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="header">
+            <div class="back-btn">←</div>
+            <div class="title">填写信息</div>
+            <div class="subtitle">完善联系方式，方便师傅上门</div>
+        </div>
+        <div class="progress">
+            <div class="step"><div class="step-dot inactive">1</div><div class="step-label inactive">位置</div></div>
+            <div class="step"><div class="step-dot inactive">2</div><div class="step-label inactive">上传</div></div>
+            <div class="step"><div class="step-dot inactive">3</div><div class="step-label inactive">分析</div></div>
+            <div class="step"><div class="step-dot inactive">4</div><div class="step-label inactive">方案</div></div>
+            <div class="step"><div class="step-dot inactive">5</div><div class="step-label inactive">价格</div></div>
+            <div class="step"><div class="step-dot active">6</div><div class="step-label active">下单</div></div>
+        </div>
+        <div class="content">
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span class="summary-label">服务类型</span>
+                    <span class="summary-value">卫生间防水</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">施工方案</span>
+                    <span class="summary-value">经济型</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">预估价格</span>
+                    <span class="summary-value">¥880</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">📝 联系信息</div>
+                <div class="form-group">
+                    <label class="form-label">称呼</label>
+                    <input type="text" class="form-input" placeholder="先生/女士">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">手机号</label>
+                    <input type="tel" class="form-input" placeholder="请输入手机号码">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">详细地址</label>
+                    <input type="text" class="form-input" placeholder="小区/街道/门牌号">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">预约时间</label>
+                    <input type="text" class="form-input" placeholder="期望上门时间">
+                </div>
+                <div class="checkbox-group">
+                    <div class="checkbox checked">✓</div>
+                    <div class="checkbox-label">
+                        我已阅读并同意 <a href="#">《用户服务协议》</a> 和 <a href="#">《隐私政策》</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-bar">
+            <button class="btn-primary">提交订单</button>
+        </div>
+    </div>
+</body>
+</html>

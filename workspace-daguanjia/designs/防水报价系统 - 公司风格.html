@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水智能报价系统 - 公司风格 v2.0</title>
+    <style>
+        :root {
+            /* 主色 - 公司房屋业务风格 */
+            --primary: #1E40AF;
+            --primary-light: #3B82F6;
+            --primary-dark: #1E3A8A;
+            
+            /* 功能色 */
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --info: #0EA5E9;
+            
+            /* 中性色 */
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --text-placeholder: #9CA3AF;
+            --border: #E5E7EB;
+            --bg-page: #F8F9FC;
+            --bg-card: #FFFFFF;
+            
+            /* 间距 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 20px;
+            --spacing-2xl: 24px;
+            
+            /* 圆角 */
+            --radius-card: 16px;
+            --radius-btn: 14px;
+            --radius-input: 12px;
+            --radius-price: 20px;
+            --radius-full: 50%;
+            
+            /* 阴影 */
+            --shadow-card: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow-price: 0 8px 30px rgba(30,64,175,0.2);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .pages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+            gap: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .phone {
+            width: 375px;
+            height: 812px;
+            background: var(--bg-page);
+            border-radius: 44px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.25);
+            overflow: hidden;
+            border: 14px solid #1a1a2e;
+            position: relative;
+        }
+        
+        .phone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 32px;
+            background: #1a1a2e;
+            border-radius: 0 0 24px 24px;
+        }
+        
+        .page-label {
+            position: absolute;
+            top: -45px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background: rgba(255,255,255,0.95);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .screen {
+            width: 100%;
+            min-height: 812px;
+            background: var(--bg-page);
+        }
+        
+        /* 头部样式 - 公司风格 */
+        .header-bar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 55px 20px 20px;
+        }
+        
+        .header-bar h2 {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .header-bar p {
+            font-size: 13px;
+            opacity: 0.9;
+            text-align: center;
+            margin-top: 6px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 65px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.2);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* 进度条 */
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            background: var(--bg-card);
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .step-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .step-dot.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .step-dot.completed {
+            background: var(--success);
+            color: white;
+        }
+        
+        .step-dot {
+            background: var(--border);
+            color: var(--text-placeholder);
+        }
+        
+        .step-label {
+            font-size: 10px;
+            color: var(--text-placeholder);
+            margin-top: 6px;
+        }
+        
+        .step.active .step-label,
+        .step.completed .step-label {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        /* 内容区 */
+        .content {
+            padding: var(--spacing-xl) var(--spacing-lg);
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+        }
+        
+        /* 位置选择网格 */
+        .loc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+        }
+        
+        .loc-item {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-btn);
+            padding: var(--spacing-xl) var(--spacing-sm);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .loc-item:hover {
+            border-color: var(--primary-light);
+            background: #EFF6FF;
+        }
+        
+        .loc-item.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+        }
+        
+        .loc-icon {
+            font-size: 32px;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .loc-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .loc-ex {
+            font-size: 11px;
+            color: var(--text-placeholder);
+            margin-top: 4px;
+        }
+        
+        /* 按钮 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: var(--spacing-xl);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-btn);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-page);
+            color: var(--text-secondary);
+            margin-top: var(--spacing-md);
+        }
+        
+        .btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* 照片上传 */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .photo-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            border-radius: var(--radius-input);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            position: relative;
+        }
+        
+        .photo-delete {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 22px;
+            height: 22px;
+            background: var(--error);
+            color: white;
+            border-radius: var(--radius-full);
+            border: 2px solid white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--primary-light);
+            border-radius: var(--radius-card);
+            padding: 30px 20px;
+            text-align: center;
+            background: #F8FAFC;
+            cursor: pointer;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .upload-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .upload-hint {
+            font-size: 12px;
+            color: var(--text-placeholder);
+            margin-top: 8px;
+        }
+        
+        /* 提示框 */
+        .tips {
+            background: #FEF3C7;
+            border-left: 4px solid var(--warning);
+            border-radius: var(--radius-input);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .tips-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+        
+        .tips-list {
+            font-size: 12px;
+            color: #78350F;
+            line-height: 1.8;
+        }
+        
+        /* AI 分析结果 */
+        .ai-result {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            border-radius: var(--radius-card);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .ai-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+        }
+        
+        .analysis-item {
+            background: white;
+            border-radius: var(--radius-input);
+            padding: var(--spacing-lg);
+            text-align: center;
+        }
+        
+        .analysis-label {
+            font-size: 11px;
+            color: var(--text-placeholder);
+            margin-bottom: 6px;
+        }
+        
+        .analysis-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* 严重程度选择 */
+        .severity-selector {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .severity-option {
+            flex: 1;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-input);
+            text-align: center;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .severity-option:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .severity-option.medium {
+            background: #FEF3C7;
+            border-color: var(--warning);
+        }
+        
+        .severity-option.selected {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .severity-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .severity-desc {
+            font-size: 11px;
+            color: var(--text-placeholder);
+            margin-top: 4px;
+        }
+        
+        /* 方案卡片 */
+        .solution-card {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-card);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .solution-card:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .solution-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        }
+        
+        .solution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .solution-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .solution-tag {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .solution-steps {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+        
+        .step-badge {
+            background: var(--bg-page);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: var(--text-placeholder);
+        }
+        
+        .solution-meta {
+            display: flex;
+            justify-content: space-between;
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border);
+        }
+        
+        .meta-item {
+            text-align: center;
+        }
+        
+        .meta-label {
+            font-size: 11px;
+            color: var(--text-placeholder);
+        }
+        
+        .meta-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 4px;
+        }
+        
+        /* 价格展示 - 48px 超大字体 */
+        .price-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: var(--radius-price);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-price);
+        }
+        
+        .price-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .price-range {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .price-range small {
+            font-size: 24px;
+        }
+        
+        .price-note {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: var(--spacing-md);
+        }
+        
+        /* 价格明细 */
+        .price-breakdown {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--bg-page);
+        }
+        
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-label {
+            color: var(--text-placeholder);
+            font-size: 14px;
+        }
+        
+        .breakdown-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .breakdown-row.total {
+            border-top: 2px solid var(--border);
+            margin-top: var(--spacing-sm);
+            padding-top: var(--spacing-xl);
+        }
+        
+        .breakdown-row.total .breakdown-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .breakdown-row.total .breakdown-value {
+            font-size: 20px;
+            color: var(--primary);
+        }
+        
+        /* 表单 */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .form-label .required {
+            color: var(--error);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-input);
+            font-size: 15px;
+            background: white;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-select {
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        /* 复选框 */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .checkbox-label {
+            font-size: 12px;
+            color: var(--text-placeholder);
+            line-height: 1.5;
+        }
+        
+        .checkbox-label a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        
+        /* 成功页 */
+        .success-page {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: white;
+            margin: 0 auto var(--spacing-2xl);
+        }
+        
+        .success-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .success-desc {
+            font-size: 15px;
+            color: var(--text-placeholder);
+            margin-bottom: var(--spacing-2xl);
+            line-height: 1.6;
+        }
+        
+        .order-card {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            border-radius: var(--radius-card);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .order-label {
+            font-size: 13px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .order-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+        
+        .contact-card {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .contact-info {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .contact-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .contact-time {
+            font-size: 13px;
+            color: var(--text-placeholder);
+            margin-top: 4px;
+        }
+        
+        .contact-phone {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* 错误页 */
+        .error-page {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .error-icon {
+            font-size: 80px;
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .error-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .error-desc {
+            font-size: 14px;
+            color: var(--text-placeholder);
+            margin-bottom: var(--spacing-2xl);
+            line-height: 1.6;
+        }
+        
+        .retry-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: var(--spacing-lg) 40px;
+            border: none;
+            border-radius: var(--radius-input);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* 底部操作区 */
+        .bottom-area {
+            padding: var(--spacing-lg);
+            background: white;
+            border-top: 1px solid var(--border);
+        }
+        
+        /* 警告提示 */
+        .alert {
+            background: #FEF3C7;
+            border-left: 4px solid var(--warning);
+            border-radius: var(--radius-input);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .alert-icon {
+            font-size: 24px;
+        }
+        
+        .alert-text {
+            flex: 1;
+            font-size: 13px;
+            color: #78350F;
+        }
+        
+        .confidence-badge {
+            display: inline-block;
+            background: var(--warning);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏠 防水智能报价系统</h1>
+        <p>公司房屋业务风格 v2.0 | 基于 34 张参考图分析 | 2026-03-09</p>
+    </div>
+    
+    <div class="pages">
+        <!-- S1: 漏点位置选择 -->
+        <div class="phone">
+            <div class="page-label">S1 漏点位置选择</div>
+            <div class="screen">
+                <div class="header-bar">
+                    <div class="back-btn">←</div>
+                    <h2>选择漏点位置</h2>
+                    <p>请选择需要防水补漏的区域</p>
+                </div>
+                <div class="progress">
+                    <div class="step active"><div class="step-dot">1</div><div class="step-label">位置</div></div>
+                    <div class="step"><div class="step-dot">2</div><div class="step-label">上传</div></div>
+                    <div class="step"><div class="step-dot">3</div><div class="step-label">分析</div></div>
+                    <div class="step"><div class="step-dot">4</div><div class="step-label">方案</div></div>
+                    <div class="step"><div class="step-dot">5</div><div class="step-label">价格</div></div>
+                    <div class="step"><div class="step-dot">6</div><div class="step-label">下单</div></div>
+                </div>
+                <div class="content">
+                    <div class="card">
+                        <div class="card-title">📍 漏点位置</div>
+                        <div class="loc-grid">
+                            <div class="loc-item selected"><div class="loc-icon">🚿</div><div class="loc-name">卫生间</div><div class="loc-ex">淋浴区/马桶</div></div>
+                            <div class="loc-item"><div class="loc-icon">🍳</div><div class="loc-name">厨房</div><div class="loc-ex">水槽/地面</div></div>
+                            <div class="loc-item"><div class="loc-icon">☀️</div><div class="loc-name">阳台</div><div class="loc-ex">洗衣区/窗户</div></div>
+                            <div class="loc-item"><div class="loc-icon">🏠</div><div class="loc-name">屋顶</div><div class="loc-ex">天台/瓦面</div></div>
+                            <div class="loc-item"><div class="loc-icon">🏢</div><div class="loc-name">外墙</div><div class="loc-ex">墙面/窗框</div></div>
+                            <div class="loc-item"><div class="loc-icon">🪟</div><div class="loc-name">飘窗</div><div class="loc-ex">窗台/周边</div></div>
+                            <div class="loc-item"><div class="loc-icon">📦</div><div class="loc-name">地下室</div><div class="loc-ex">地面/墙面</div></div>
+                            <div class="loc-item"><div class="loc-icon">❓</div><div class="loc-name">其他</div><div class="loc-ex">自定义描述</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-area"><button class="btn">下一步</button></div>
+            </div>
+        </div>
+        
+        <!-- S2: 上传现场图片 -->
+        <div class="phone">
+            <div class="page-label">S2 上传现场图片</div>
+            <div class="screen">
+                <div class="header-bar">
+                    <div class="back-btn">←</div>
+                    <h2>上传现场图片</h2>
+                    <p>上传 1-5 张照片帮助 AI 更准确分析</p>
+                </div>
+                <div class="progress">
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">位置</div></div>
+                    <div class="step active"><div class="step-dot">2</div><div class="step-label">上传</div></div>
+                    <div class="step"><div class="step-dot">3</div><div class="step-label">分析</div></div>
+                    <div class="step"><div class="step-dot">4</div><div class="step-label">方案</div></div>
+                    <div class="step"><div class="step-dot">5</div><div class="step-label">价格</div></div>
+                    <div class="step"><div class="step-dot">6</div><div class="step-label">下单</div></div>
+                </div>
+                <div class="content">
+                    <div class="tips">
+                        <div class="tips-title">📸 拍摄建议</div>
+                        <div class="tips-list">• 保持光线充足，避免过暗或过曝<br>• 正对渗漏区域，保持适当距离 (30-50cm)<br>• 拍摄清晰，避免模糊或手抖<br>• 多角度拍摄，展示渗漏全貌</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📷 已上传 2 张</div>
+                        <div class="photo-grid">
+                            <div class="photo-item">📸<div class="photo-delete">×</div></div>
+                            <div class="photo-item">📸<div class="photo-delete">×</div></div>
+                            <div class="photo-item" style="background:#F3F4F6;border:2px dashed var(--border);">➕</div>
+                            <div class="photo-item" style="background:#F3F4F6;border:2px dashed var(--border);">➕</div>
+                        </div>
+                        <div class="upload-area">
+                            <div class="upload-icon">📷</div>
+                            <div class="upload-text">点击添加照片</div>
+                            <div class="upload-hint">还可上传 3 张，支持拍照或相册</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-area">
+                    <button class="btn btn-secondary">上一步</button>
+                    <button class="btn">开始 AI 分析</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- S3: AI 智能分析 -->
+        <div class="phone">
+            <div class="page-label">S3 AI 智能分析</div>
+            <div class="screen">
+                <div class="header-bar">
+                    <div class="back-btn">←</div>
+                    <h2>AI 智能分析</h2>
+                    <p>分析完成，请确认结果</p>
+                </div>
+                <div class="progress">
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">位置</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">上传</div></div>
+                    <div class="step active"><div class="step-dot">3</div><div class="step-label">分析</div></div>
+                    <div class="step"><div class="step-dot">4</div><div class="step-label">方案</div></div>
+                    <div class="step"><div class="step-dot">5</div><div class="step-label">价格</div></div>
+                    <div class="step"><div class="step-dot">6</div><div class="step-label">下单</div></div>
+                </div>
+                <div class="content">
+                    <div class="alert">
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-text">AI 置信度 65%，建议手动修正</div>
+                        <span class="confidence-badge">切换手动</span>
+                    </div>
+                    <div class="ai-result">
+                        <div class="ai-badge">✨ AI 分析结果</div>
+                        <div class="analysis-grid">
+                            <div class="analysis-item"><div class="analysis-label">估算面积</div><div class="analysis-value">8.5㎡</div></div>
+                            <div class="analysis-item"><div class="analysis-label">病害类型</div><div class="analysis-value" style="font-size:14px">防水层破损</div></div>
+                            <div class="analysis-item"><div class="analysis-label">严重程度</div><div class="analysis-value" style="color:var(--warning)">中等</div></div>
+                            <div class="analysis-item"><div class="analysis-label">置信度</div><div class="analysis-value">65%</div></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">✏️ 手动修正</div>
+                        <div style="font-size:12px;color:var(--text-placeholder);margin-bottom:8px">严重程度</div>
+                        <div class="severity-selector">
+                            <div class="severity-option"><div class="severity-name">🟢 轻微</div><div class="severity-desc">表面渗水</div></div>
+                            <div class="severity-option medium selected"><div class="severity-name">🟡 中等</div><div class="severity-desc">明显漏水</div></div>
+                            <div class="severity-option"><div class="severity-name">🔴 严重</div><div class="severity-desc">大量渗漏</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-area">
+                    <button class="btn btn-secondary">上一步</button>
+                    <button class="btn">确认并查看方案</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- S4: 施工方案推荐 -->
+        <div class="phone">
+            <div class="page-label">S4 施工方案推荐</div>
+            <div class="screen">
+                <div class="header-bar">
+                    <div class="back-btn">←</div>
+                    <h2>推荐施工方案</h2>
+                    <p>根据病害类型为您匹配最佳方案</p>
+                </div>
+                <div class="progress">
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">位置</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">上传</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">分析</div></div>
+                    <div class="step active"><div class="step-dot">4</div><div class="step-label">方案</div></div>
+                    <div class="step"><div class="step-dot">5</div><div class="step-label">价格</div></div>
+                    <div class="step"><div class="step-dot">6</div><div class="step-label">下单</div></div>
+                </div>
+                <div class="content">
+                    <div class="solution-card selected">
+                        <div class="solution-header">
+                            <span class="solution-name">✅ 标准型防水方案</span>
+                            <span class="solution-tag">推荐</span>
+                        </div>
+                        <div class="solution-steps">
+                            <span class="step-badge">① 基层清理</span>
+                            <span class="step-badge">② 找平处理</span>
+                            <span class="step-badge">③ 涂刷防水</span>
+                            <span class="step-badge">④ 闭水试验</span>
+                        </div>
+                        <div style="font-size:13px;color:var(--text-placeholder);margin-bottom:var(--spacing-md)">📦 材料：东方雨虹柔性防水涂料</div>
+                        <div class="solution-meta">
+                            <div class="meta-item"><div class="meta-label">预计时间</div><div class="meta-value">2-3 天</div></div>
+                            <div class="meta-item"><div class="meta-label">质保期</div><div class="meta-value">5 年</div></div>
+                            <div class="meta-item"><div class="meta-label">适用</div><div class="meta-value">中等渗漏</div></div>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-header">
+                            <span class="solution-name">💰 经济型防水方案</span>
+                        </div>
+                        <div class="solution-steps">
+                            <span class="step-badge">① 表面清理</span>
+                            <span class="step-badge">② 局部修补</span>
+                            <span class="step-badge">③ 涂刷防水</span>
+                        </div>
+                        <div style="font-size:13px;color:var(--text-placeholder);margin-bottom:var(--spacing-md)">📦 材料：国产通用防水涂料</div>
+                        <div class="solution-meta">
+                            <div class="meta-item"><div class="meta-label">预计时间</div><div class="meta-value">1-2 天</div></div>
+                            <div class="meta-item"><div class="meta-label">质保期</div><div class="meta-value">2 年</div></div>
+                            <div class="meta-item"><div class="meta-label">适用</div><div class="meta-value">轻微渗漏</div></div>
+                        </div>
+                    </div>
+                    <div class="solution-card">
+                        <div class="solution-header">
+                            <span class="solution-name">🏆 尊享型防水方案</span>
+                            <span class="solution-tag" style="background:linear-gradient(135deg,var(--warning),#D97706)">全包</span>
+                        </div>
+                        <div class="solution-steps">
+                            <span class="step-badge">① 拆除旧层</span>
+                            <span class="step-badge">② 基层处理</span>
+                            <span class="step-badge">③ 多层防水</span>
+                            <span class="step-badge">④ 保护层</span>
+                            <span class="step-badge">⑤ 闭水试验</span>
+                        </div>
+                        <div style="font-size:13px;color:var(--text-placeholder);margin-bottom:var(--spacing-md)">📦 材料：进口德高防水系统</div>
+                        <div class="solution-meta">
+                            <div class="meta-item"><div class="meta-label">预计时间</div><div class="meta-value">3-5 天</div></div>
+                            <div class="meta-item"><div class="meta-label">质保期</div><div class="meta-value">10 年</div></div>
+                            <div class="meta-item"><div class="meta-label">适用</div><div class="meta-value">严重渗漏</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-area">
+                    <button class="btn btn-secondary">上一步</button>
+                    <button class="btn">确认方案 · 查看价格</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- S5: 价格显示 -->
+        <div class="phone">
+            <div class="page-label">S5 价格显示</div>
+            <div class="screen">
+                <div class="header-bar">
+                    <div class="back-btn">←</div>
+                    <h2>价格预估</h2>
+                    <p>标准型防水方案</p>
+                </div>
+                <div class="progress">
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">位置</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">上传</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">分析</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">方案</div></div>
+                    <div class="step active"><div class="step-dot">5</div><div class="step-label">价格</div></div>
+                    <div class="step"><div class="step-dot">6</div><div class="step-label">下单</div></div>
+                </div>
+                <div class="content">
+                    <div class="price-hero">
+                        <div class="price-label">预估价格区间</div>
+                        <div class="price-range"><small>¥</small>1,200<small>-</small>1,800</div>
+                        <div class="price-note">最终价格以师傅上门勘测为准</div>
+                    </div>
+                    <div class="price-breakdown">
+                        <div class="card-title" style="margin-bottom:var(--spacing-lg)">📊 价格构成</div>
+                        <div class="breakdown-row"><span class="breakdown-label">材料费</span><span class="breakdown-value">¥600 - 800</span></div>
+                        <div class="breakdown-row"><span class="breakdown-label">人工费</span><span class="breakdown-value">¥400 - 600</span></div>
+                        <div class="breakdown-row"><span class="breakdown-label">面积因子 (8.5㎡)</span><span class="breakdown-value">¥200 - 300</span></div>
+                        <div class="breakdown-row"><span class="breakdown-label">难度系数 (中等)</span><span class="breakdown-value">¥100 - 200</span></div>
+                        <div class="breakdown-row total"><span class="breakdown-label">预估总价</span><span class="breakdown-value">¥1,200 - 1,800</span></div>
+                    </div>
+                </div>
+                <div class="bottom-area">
+                    <button class="btn btn-secondary">上一步</button>
+                    <button class="btn">确认价格 · 填写信息</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- S6: 留资下单 -->
+        <div class="phone">
+            <div class="page-label">S6 留资下单</div>
+            <div class="screen">
+                <div class="header-bar">
+                    <div class="back-btn">←</div>
+                    <h2>填写联系信息</h2>
+                    <p>客服将在 15 分钟内联系您</p>
+                </div>
+                <div class="progress">
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">位置</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">上传</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">分析</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">方案</div></div>
+                    <div class="step completed"><div class="step-dot">✓</div><div class="step-label">价格</div></div>
+                    <div class="step active"><div class="step-dot">6</div><div class="step-label">下单</div></div>
+                </div>
+                <div class="content">
+                    <div class="card">
+                        <div class="card-title">📝 联系信息</div>
+                        <div class="form-group">
+                            <label class="form-label">姓名 <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="请输入您的姓名">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">手机号 <span class="required">*</span></label>
+                            <input type="tel" class="form-input" placeholder="请输入手机号码">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">详细地址 <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="区/街道/小区/门牌号">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">期望上门时间</label>
+                            <select class="form-input form-select">
+                                <option>尽快 (今天)</option>
+                                <option>明天上午</option>
+                                <option>明天下午</option>
+                                <option>后天</option>
+                                <option>本周内</option>
+                                <option>时间可协商</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">补充说明</label>
+                            <textarea class="form-input" rows="3" placeholder="请描述其他需要说明的情况（可选）"></textarea>
+                        </div>
+                    </div>
+                    <div class="checkbox-group">
+                        <div class="checkbox">✓</div>
+                        <div class="checkbox-label">我已阅读并同意 <a href="#">《用户服务协议》</a> 和 <a href="#">《隐私政策》</a>，授权客服联系我安排上门服务</div>
+                    </div>
+                </div>
+                <div class="bottom-area">
+                    <button class="btn btn-secondary">上一步</button>
+                    <button class="btn">确认下单</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 成功页 -->
+        <div class="phone">
+            <div class="page-label">提交成功页</div>
+            <div class="screen">
+                <div class="success-page">
+                    <div class="success-icon">✓</div>
+                    <h2 class="success-title">提交成功！</h2>
+                    <p class="success-desc">您的需求已收到，客服将在<br><strong>15 分钟内</strong>与您联系确认</p>
+                    <div class="order-card">
+                        <div class="order-label">工单号</div>
+                        <div class="order-number">FW20260309001</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-info">
+                            <div class="contact-title">客服热线</div>
+                            <div class="contact-time">工作时间 9:00-21:00</div>
+                            <div class="contact-phone">400-888-8888</div>
+                        </div>
+                    </div>
+                    <div class="card" style="text-align:left">
+                        <div class="card-title">📋 订单摘要</div>
+                        <div class="breakdown-row"><span class="breakdown-label">服务类型</span><span class="breakdown-value">卫生间防水</span></div>
+                        <div class="breakdown-row"><span class="breakdown-label">预估面积</span><span class="breakdown-value">8.5㎡</span></div>
+                        <div class="breakdown-row"><span class="breakdown-label">预估价格</span><span class="breakdown-value">¥1,200-1,800</span></div>
+                        <div class="breakdown-row"><span class="breakdown-label">上门时间</span><span class="breakdown-value">尽快 (今天)</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 异常页 1: 网络失败 -->
+        <div class="phone">
+            <div class="page-label">异常 - 网络失败</div>
+            <div class="screen">
+                <div class="error-page">
+                    <div class="error-icon">📡</div>
+                    <h2 class="error-title">网络连接失败</h2>
+                    <p class="error-desc">请检查您的网络连接<br>或稍后重试</p>
+                    <button class="retry-btn">🔄 重新尝试</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 异常页 2: AI 识别失败 -->
+        <div class="phone">
+            <div class="page-label">异常 - AI 识别失败</div>
+            <div class="screen">
+                <div class="error-page">
+                    <div class="error-icon">🤖</div>
+                    <h2 class="error-title">AI 识别失败</h2>
+                    <p class="error-desc">图片质量不佳或光线不足<br>导致无法准确识别</p>
+                    <button class="retry-btn">📷 重新上传</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 异常页 3: 上传失败 -->
+        <div class="phone">
+            <div class="page-label">异常 - 上传失败</div>
+            <div class="screen">
+                <div class="error-page">
+                    <div class="error-icon">📸</div>
+                    <h2 class="error-title">图片上传失败</h2>
+                    <p class="error-desc">上传过程中断<br>请检查网络后重试</p>
+                    <button class="retry-btn">🔄 重新上传</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

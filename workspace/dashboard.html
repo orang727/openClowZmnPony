@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小康的任务看板</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header .subtitle { color: #888; font-size: 0.9rem; margin-top: 8px; }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .stat-card .number { font-size: 2rem; font-weight: bold; }
+        .stat-card .label { color: #888; font-size: 0.85rem; margin-top: 5px; }
+        .stat-card.active .number { color: #22c55e; }
+        
+        .section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .section h2 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .status-active { background: rgba(34,197,94,0.2); color: #22c55e; }
+        .status-idle { background: rgba(107,114,128,0.2); color: #9ca3af; }
+        .status-error { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .status-direct { background: rgba(59,130,246,0.2); color: #60a5fa; }
+        .status-group { background: rgba(168,85,247,0.2); color: #c084fc; }
+        .status-cron { background: rgba(251,146,60,0.2); color: #fb923c; }
+        
+        .session-table { width: 100%; border-collapse: collapse; }
+        .session-table th, .session-table td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem;
+        }
+        .session-table th { color: #888; font-weight: 500; font-size: 0.75rem; }
+        .session-table tr:hover { background: rgba(255,255,255,0.02); }
+        .session-table .key { font-family: monospace; font-size: 0.8rem; color: #00d4ff; }
+        .session-table .time { color: #666; }
+        .session-table .tokens { color: #fbbf24; }
+        
+        .gateway-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .gateway-item {
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .gateway-item .key { color: #00d4ff; font-weight: 500; font-size: 0.85rem; }
+        .gateway-item .value { color: #aaa; margin-top: 4px; font-size: 0.8rem; }
+        
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .skill-tag {
+            background: rgba(124,58,237,0.2);
+            color: #a78bfa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 小康的任务看板</h1>
+        <div class="subtitle">OpenClaw Agent Status | 更新时间: <span id="updateTime">--</span></div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card active">
+            <div class="number">🟢</div>
+            <div class="label">Gateway 运行中</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="sessionCount">15</div>
+            <div class="label">总会话数</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="skillCount">25</div>
+            <div class="label">已安装技能</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="activeSession">2</div>
+            <div class="label">活跃会话</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔌 Gateway 状态</h2>
+        <div class="gateway-info">
+            <div class="gateway-item"><div class="key">服务</div><div class="value">LaunchAgent (自动启动)</div></div>
+            <div class="gateway-item"><div class="key">地址</div><div class="value">127.0.0.1:18789</div></div>
+            <div class="gateway-item"><div class="key">模型</div><div class="value">MiniMax-M2.5</div></div>
+            <div class="gateway-item"><div class="key">上下文</div><div class="value">200K tokens</div></div>
+            <div class="gateway-item"><div class="key">Agent ID</div><div class="value">main</div></div>
+            <div class="gateway-item"><div class="key">版本</div><div class="value">OpenClaw 2026.3.2</div></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>💬 所有会话 (<span id="sessionListCount">15</span>)</h2>
+        <table class="session-table">
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th>会话标识</th>
+                    <th>更新时间</th>
+                    <th>Token使用</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody id="sessionTable"></tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>🛠️ 已安装技能 (<span id="skillListCount">25</span>)</h2>
+        <div class="skills-grid" id="skillsGrid"></div>
+    </div>
+
+    <script>
+        const skills = [
+            'cn-search', 'bilibili', 'douyin', 'xiaohongshu', 'zhihu',
+            'waterproof-monitor', 'skill-creator', 'find-skills',
+            'requirement-assessment', 'requirements-analysis',
+            'adaptive-reasoning', 'reasoning-personas', 'reasoning-answer',
+            'deep-thinking', 'context-recovery', 'context-budgeting',
+            'context-scope-tags', 'context-driven-development', 'auto-context',
+            'analysis', 'data-analysis', 'interview-analysis',
+            'ux-researcher', 'pain-point-finder', 'model-switcher'
+        ];
+
+        const sessions = [
+            { kind: 'direct', key: 'feishu:泊宁(当前)', age: '1分钟内', tokens: '110K/200K (55%)', active: true },
+            { kind: 'direct', key: 'main(主会话)', age: '29分钟前', tokens: '26K/200K (13%)', active: true },
+            { kind: 'group', key: 'feishu:群组(8a28...)', age: '14小时前', tokens: '18K/200K (9%)', active: false },
+            { kind: 'group', key: 'feishu:群组(62d9...)', age: '18小时前', tokens: '22K/200K (11%)', active: false },
+            { kind: 'cron', key: 'cron:定时任务(832a...)', age: '18小时前', tokens: '20K/200K (10%)', active: false },
+            { kind: 'cron', key: 'cron:定时任务(9b26...)', age: '31小时前', tokens: '22K/200K (11%)', active: false },
+            { kind: 'cron', key: 'cron:定时任务(b0d2...)', age: '34小时前', tokens: '22K/200K (11%)', active: false },
+            { kind: 'cron', key: 'cron:心跳(heartbeat)', age: '3天前', tokens: '55K/200K (28%)', active: false },
+            { kind: 'direct', key: 'feishu:历史会话', age: '4天前', tokens: '未知', active: false },
+        ];
+
+        function formatAge(ageMs) {
+            const minutes = Math.floor(ageMs / 60000);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            if (days > 0) return `${days}天前`;
+            if (hours > 0) return `${hours}小时前`;
+            if (minutes > 0) return `${minutes}分钟前`;
+            return '刚刚';
+        }
+
+        function getKindLabel(kind) {
+            const map = { 'direct': '私聊', 'group': '群组', 'cron': '定时' };
+            return map[kind] || kind;
+        }
+
+        function updateTime() {
+            document.getElementById('updateTime').textContent = new Date().toLocaleString('zh-CN');
+        }
+
+        function renderSkills() {
+            document.getElementById('skillCount').textContent = skills.length;
+            document.getElementById('skillListCount').textContent = skills.length;
+            document.getElementById('skillsGrid').innerHTML = skills.map(s => 
+                `<span class="skill-tag">${s}</span>`
+            ).join('');
+        }
+
+        function renderSessions() {
+            const activeCount = sessions.filter(s => s.active).length;
+            document.getElementById('activeSession').textContent = activeCount;
+            document.getElementById('sessionCount').textContent = sessions.length;
+            document.getElementById('sessionListCount').textContent = sessions.length;
+
+            document.getElementById('sessionTable').innerHTML = sessions.map(s => `
+                <tr>
+                    <td><span class="status-badge status-${s.kind}">${getKindLabel(s.kind)}</span></td>
+                    <td class="key">${s.key}</td>
+                    <td class="time">${s.age}</td>
+                    <td class="tokens">${s.tokens}</td>
+                    <td>${s.active ? 
+                        '<span class="status-badge status-active">● 活跃</span>' : 
+                        '<span class="status-badge status-idle">○ 历史</span>'}</td>
+                </tr>
+            `).join('');
+        }
+
+        updateTime();
+        renderSkills();
+        renderSessions();
+        
+        setInterval(updateTime, 30000);
+    </script>
+</body>
+</html>

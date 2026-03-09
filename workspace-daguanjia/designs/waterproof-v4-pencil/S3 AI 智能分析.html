@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水智能报价 v4.0 - S3 AI 智能分析</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #F8F9FC; }
+        .phone-frame { width: 375px; height: 812px; margin: 0 auto; background: #F8F9FC; position: relative; }
+        .header { background: linear-gradient(135deg, #1E40AF, #3B82F6); height: 140px; padding: 20px; position: relative; }
+        .back-btn { position: absolute; left: 16px; top: 68px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+        .title { color: white; font-size: 20px; font-weight: 600; text-align: center; margin-top: 40px; }
+        .subtitle { color: rgba(255,255,255,0.9); font-size: 13px; text-align: center; margin-top: 8px; }
+        .progress { background: white; height: 60px; display: flex; align-items: center; justify-content: space-around; padding: 0 20px; }
+        .step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .step-dot { width: 26px; height: 26px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+        .step-dot.active { background: #1E40AF; color: white; }
+        .step-dot.inactive { background: #E5E7EB; color: #9CA3AF; }
+        .step-label.active { color: #1E40AF; font-weight: 500; font-size: 10px; }
+        .step-label.inactive { color: #9CA3AF; font-size: 10px; }
+        .content { padding: 20px; }
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 600; color: #1F2937; margin-bottom: 16px; }
+        .analysis-result { background: linear-gradient(135deg, #DBEAFE, #BFDBFE); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+        .analysis-row { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .analysis-row:last-child { margin-bottom: 0; }
+        .label { color: #6B7280; font-size: 14px; }
+        .value { color: #1E40AF; font-size: 15px; font-weight: 600; }
+        .confidence-bar { width: 100%; height: 8px; background: #E5E7EB; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        .confidence-fill { height: 100%; background: linear-gradient(90deg, #1E40AF, #3B82F6); border-radius: 4px; width: 92%; }
+        .badge { display: inline-block; padding: 4px 12px; background: #10B981; color: white; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .edit-btn { color: #3B82F6; font-size: 14px; cursor: pointer; }
+        .bottom-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 375px; background: white; padding: 16px 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .btn-primary { width: 100%; height: 52px; background: linear-gradient(135deg, #1E40AF, #3B82F6); border: none; border-radius: 14px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .loading { text-align: center; padding: 40px 20px; }
+        .loading-spinner { width: 48px; height: 48px; border: 4px solid #E5E7EB; border-top-color: #1E40AF; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: #6B7280; font-size: 15px; }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="header">
+            <div class="back-btn">←</div>
+            <div class="title">AI 智能分析</div>
+            <div class="subtitle">AI 正在分析您的漏点情况</div>
+        </div>
+        <div class="progress">
+            <div class="step"><div class="step-dot inactive">1</div><div class="step-label inactive">位置</div></div>
+            <div class="step"><div class="step-dot inactive">2</div><div class="step-label inactive">上传</div></div>
+            <div class="step"><div class="step-dot active">3</div><div class="step-label active">分析</div></div>
+            <div class="step"><div class="step-dot inactive">4</div><div class="step-label inactive">方案</div></div>
+            <div class="step"><div class="step-dot inactive">5</div><div class="step-label inactive">价格</div></div>
+            <div class="step"><div class="step-dot inactive">6</div><div class="step-label inactive">下单</div></div>
+        </div>
+        <div class="content">
+            <div class="card">
+                <div class="card-title">🔍 分析结果</div>
+                <div class="analysis-result">
+                    <div class="analysis-row">
+                        <span class="label">渗漏面积</span>
+                        <span class="value">约 3.5 m²</span>
+                    </div>
+                    <div class="analysis-row">
+                        <span class="label">病害类型</span>
+                        <span class="value">管道接口渗漏</span>
+                    </div>
+                    <div class="analysis-row">
+                        <span class="label">建议工艺</span>
+                        <span class="value">免砸砖防水</span>
+                    </div>
+                    <div class="analysis-row">
+                        <span class="label">置信度</span>
+                        <span class="value">92%</span>
+                    </div>
+                    <div class="confidence-bar"><div class="confidence-fill"></div></div>
+                </div>
+                <div style="text-align:center;margin-top:16px">
+                    <span class="badge">✅ AI 分析完成</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">📝 手动修正 <span class="edit-btn">编辑</span></div>
+                <div class="analysis-row">
+                    <span class="label">实际面积</span>
+                    <span class="value">3.5 m²</span>
+                </div>
+                <div class="analysis-row">
+                    <span class="label">渗漏程度</span>
+                    <span class="value">中度</span>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-bar">
+            <button class="btn-primary">查看方案</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水智能报价 v4.0 - 表单错误</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #F8F9FC; }
+        .phone-frame { width: 375px; height: 812px; margin: 0 auto; background: #F8F9FC; }
+        .error-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 40px 20px; text-align: center; }
+        .error-icon { width: 96px; height: 96px; background: #FEE2E2; border-radius: 48px; display: flex; align-items: center; justify-content: center; font-size: 56px; margin-bottom: 24px; }
+        .error-title { font-size: 20px; font-weight: 600; color: #1F2937; margin-bottom: 12px; }
+        .error-subtitle { font-size: 15px; color: #6B7280; margin-bottom: 32px; line-height: 1.6; }
+        .error-card { background: white; border-radius: 16px; padding: 24px; width: 100%; margin-bottom: 32px; }
+        .error-list { list-style: none; text-align: left; }
+        .error-list li { padding: 12px 0; border-bottom: 1px solid #E5E7EB; font-size: 14px; color: #EF4444; display: flex; align-items: flex-start; gap: 10px; }
+        .error-list li:last-child { border-bottom: none; }
+        .error-list li:before { content: "⚠️"; font-size: 16px; }
+        .btn-primary { width: 100%; height: 52px; background: linear-gradient(135deg, #1E40AF, #3B82F6); border: none; border-radius: 14px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
+        .btn-secondary { width: 100%; height: 52px; background: white; border: 1px solid #E5E7EB; border-radius: 14px; color: #6B7280; font-size: 16px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="error-container">
+            <div class="error-icon">⚠️</div>
+            <div class="error-title">表单填写不完整</div>
+            <div class="error-subtitle">请完善以下信息后提交</div>
+            
+            <div class="error-card">
+                <ul class="error-list">
+                    <li>请输入有效的手机号码（11 位）</li>
+                    <li>请填写详细地址信息</li>
+                    <li>请勾选用户服务协议</li>
+                </ul>
+            </div>
+            
+            <button class="btn-primary">返回修改</button>
+            <button class="btn-secondary">联系客服</button>
+        </div>
+    </div>
+</body>
+</html>

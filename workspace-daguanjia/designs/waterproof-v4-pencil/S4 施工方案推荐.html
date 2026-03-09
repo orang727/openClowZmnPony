@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水智能报价 v4.0 - S4 施工方案推荐</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #F8F9FC; }
+        .phone-frame { width: 375px; height: 812px; margin: 0 auto; background: #F8F9FC; position: relative; }
+        .header { background: linear-gradient(135deg, #1E40AF, #3B82F6); height: 140px; padding: 20px; position: relative; }
+        .back-btn { position: absolute; left: 16px; top: 68px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+        .title { color: white; font-size: 20px; font-weight: 600; text-align: center; margin-top: 40px; }
+        .subtitle { color: rgba(255,255,255,0.9); font-size: 13px; text-align: center; margin-top: 8px; }
+        .progress { background: white; height: 60px; display: flex; align-items: center; justify-content: space-around; padding: 0 20px; }
+        .step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .step-dot { width: 26px; height: 26px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+        .step-dot.active { background: #1E40AF; color: white; }
+        .step-dot.inactive { background: #E5E7EB; color: #9CA3AF; }
+        .step-label.active { color: #1E40AF; font-weight: 500; font-size: 10px; }
+        .step-label.inactive { color: #9CA3AF; font-size: 10px; }
+        .content { padding: 20px; }
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 2px solid transparent; }
+        .card.selected { border-color: #1E40AF; background: linear-gradient(135deg, #EFF6FF, #DBEAFE); }
+        .card-title { font-size: 16px; font-weight: 600; color: #1F2937; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .card-price { color: #1E40AF; font-size: 18px; font-weight: 700; }
+        .card-tags { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .tag { padding: 4px 10px; background: #DBEAFE; color: #1E40AF; border-radius: 8px; font-size: 12px; font-weight: 500; }
+        .card-info { margin-bottom: 12px; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .info-label { color: #6B7280; }
+        .info-value { color: #374151; font-weight: 500; }
+        .steps-title { font-size: 13px; font-weight: 600; color: #1F2937; margin-bottom: 8px; }
+        .steps-list { display: flex; flex-direction: column; gap: 6px; }
+        .step-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #6B7280; }
+        .step-num { width: 20px; height: 20px; background: #E5E7EB; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #6B7280; }
+        .selected .step-num { background: #1E40AF; color: white; }
+        .badge-recommend { background: linear-gradient(135deg, #1E40AF, #3B82F6); color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .bottom-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 375px; background: white; padding: 16px 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .btn-primary { width: 100%; height: 52px; background: linear-gradient(135deg, #1E40AF, #3B82F6); border: none; border-radius: 14px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="header">
+            <div class="back-btn">←</div>
+            <div class="title">施工方案推荐</div>
+            <div class="subtitle">AI 为您推荐 3 套施工方案</div>
+        </div>
+        <div class="progress">
+            <div class="step"><div class="step-dot inactive">1</div><div class="step-label inactive">位置</div></div>
+            <div class="step"><div class="step-dot inactive">2</div><div class="step-label inactive">上传</div></div>
+            <div class="step"><div class="step-dot inactive">3</div><div class="step-label inactive">分析</div></div>
+            <div class="step"><div class="step-dot active">4</div><div class="step-label active">方案</div></div>
+            <div class="step"><div class="step-dot inactive">5</div><div class="step-label inactive">价格</div></div>
+            <div class="step"><div class="step-dot inactive">6</div><div class="step-label inactive">下单</div></div>
+        </div>
+        <div class="content">
+            <div class="card selected">
+                <div class="card-title">
+                    <span>💰 经济型</span>
+                    <span class="badge-recommend">推荐</span>
+                </div>
+                <div class="card-price">¥880 起</div>
+                <div class="card-tags">
+                    <span class="tag">性价比高</span>
+                    <span class="tag">快速施工</span>
+                </div>
+                <div class="card-info">
+                    <div class="info-row"><span class="info-label">防水材料</span><span class="info-value">聚氨酯防水涂料</span></div>
+                    <div class="info-row"><span class="info-label">施工时间</span><span class="info-value">1-2 天</span></div>
+                    <div class="info-row"><span class="info-label">质保期限</span><span class="info-value">3 年</span></div>
+                </div>
+                <div class="steps-title">施工步骤</div>
+                <div class="steps-list">
+                    <div class="step-item"><span class="step-num">1</span><span>基层清理</span></div>
+                    <div class="step-item"><span class="step-num">2</span><span>节点处理</span></div>
+                    <div class="step-item"><span class="step-num">3</span><span>涂刷防水层</span></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">⭐ 标准型</div>
+                <div class="card-price">¥1,580 起</div>
+                <div class="card-tags">
+                    <span class="tag">均衡选择</span>
+                    <span class="tag">持久防护</span>
+                </div>
+                <div class="card-info">
+                    <div class="info-row"><span class="info-label">防水材料</span><span class="info-value">聚合物水泥基</span></div>
+                    <div class="info-row"><span class="info-label">施工时间</span><span class="info-value">2-3 天</span></div>
+                    <div class="info-row"><span class="info-label">质保期限</span><span class="info-value">5 年</span></div>
+                </div>
+                <div class="steps-title">施工步骤</div>
+                <div class="steps-list">
+                    <div class="step-item"><span class="step-num">1</span><span>基层处理</span></div>
+                    <div class="step-item"><span class="step-num">2</span><span>节点加强</span></div>
+                    <div class="step-item"><span class="step-num">3</span><span>第一遍涂刷</span></div>
+                    <div class="step-item"><span class="step-num">4</span><span>第二遍涂刷</span></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">👑 尊享型</div>
+                <div class="card-price">¥2,680 起</div>
+                <div class="card-tags">
+                    <span class="tag">顶级材料</span>
+                    <span class="tag">超长质保</span>
+                </div>
+                <div class="card-info">
+                    <div class="info-row"><span class="info-label">防水材料</span><span class="info-value">进口环氧树脂</span></div>
+                    <div class="info-row"><span class="info-label">施工时间</span><span class="info-value">3-5 天</span></div>
+                    <div class="info-row"><span class="info-label">质保期限</span><span class="info-value">10 年</span></div>
+                </div>
+                <div class="steps-title">施工步骤</div>
+                <div class="steps-list">
+                    <div class="step-item"><span class="step-num">1</span><span>深度清理</span></div>
+                    <div class="step-item"><span class="step-num">2</span><span>找平处理</span></div>
+                    <div class="step-item"><span class="step-num">3</span><span>多层防水</span></div>
+                    <div class="step-item"><span class="step-num">4</span><span>保护层施工</span></div>
+                    <div class="step-item"><span class="step-num">5</span><span>闭水试验</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-bar">
+            <button class="btn-primary">确认方案</button>
+        </div>
+    </div>
+</body>
+</html>

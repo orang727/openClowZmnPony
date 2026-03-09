@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防水补漏智能报价器 - 项目整体方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .header .meta {
+            margin-top: 20px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+        
+        .section h4 {
+            color: #555;
+            font-size: 1.1em;
+            margin: 20px 0 10px 0;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .card.warning {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+        
+        .card.success {
+            border-left-color: #10b981;
+            background: #ecfdf5;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        tr:hover {
+            background: #f9fafb;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #667eea;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+        
+        .timeline-item.completed::before {
+            background: #10b981;
+            box-shadow: 0 0 0 3px #10b981;
+        }
+        
+        .timeline-item.pending::before {
+            background: #f59e0b;
+            box-shadow: 0 0 0 3px #f59e0b;
+        }
+        
+        .flow-diagram {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 2px;
+            font-weight: 500;
+        }
+        
+        .tag-p0 {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .tag-p1 {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .tag-p2 {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .checklist {
+            list-style: none;
+        }
+        
+        .checklist li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .checklist li.missing::before {
+            content: '✗';
+            color: #dc2626;
+        }
+        
+        .checklist li.warning::before {
+            content: '⚠';
+            color: #f59e0b;
+        }
+        
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .gap-analysis {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .gap-analysis h3 {
+            color: #92400e;
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 防水补漏智能报价器</h1>
+            <div class="subtitle">项目整体方案文档</div>
+            <div class="meta">
+                <div>版本：v1.0 | 创建日期：2026-03-07</div>
+                <div>产品负责人：小马 | 技术栈：Vue3 + FastAPI + MySQL</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- 目录 -->
+            <div class="section">
+                <h2>📑 目录</h2>
+                <div class="toc">
+                    <ul>
+                        <li><a href="#overview">1. 项目概述</a></li>
+                        <li><a href="#requirements">2. 需求分析</a></li>
+                        <li><a href="#prd">3. 产品需求文档 (PRD)</a></li>
+                        <li><a href="#tech">4. 技术方案</a></li>
+                        <li><a href="#plan">5. 项目计划</a></li>
+                        <li><a href="#deployment">6. 部署与外网访问</a></li>
+                        <li><a href="#gaps">7. 缺失项分析</a></li>
+                        <li><a href="#risks">8. 风险评估</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 项目概述 -->
+            <div class="section" id="overview">
+                <h2>1. 项目概述</h2>
+                
+                <div class="card">
+                    <h4>🎯 产品定位</h4>
+                    <p>用户拍照即可获得防水故障评估、施工方案推荐和价格区间，快速生成工单的 H5 应用，嵌入微信/抖音小程序 WebView。</p>
+                </div>
+                
+                <h3>1.1 核心价值</h3>
+                <ul class="checklist">
+                    <li>用户侧：拍照即可获取专业防水评估和报价，透明化价格</li>
+                    <li>业务侧：自动化初步诊断，减少客服成本，提高转化率</li>
+                    <li>技术侧：AI 图像识别 + 规则引擎，智能化匹配施工方案</li>
+                </ul>
+                
+                <h3>1.2 目标用户</h3>
+                <table>
+                    <tr>
+                        <th>用户类型</th>
+                        <th>使用场景</th>
+                        <th>核心需求</th>
+                    </tr>
+                    <tr>
+                        <td>家庭用户</td>
+                        <td>发现家中漏水，需要快速评估和报价</td>
+                        <td>快速、准确、价格透明</td>
+                    </tr>
+                    <tr>
+                        <td>物业管理人员</td>
+                        <td>处理小区住户报修</td>
+                        <td>批量处理、专业评估</td>
+                    </tr>
+                    <tr>
+                        <td>师傅/客服</td>
+                        <td>接收和处理工单</td>
+                        <td>工单信息完整、便于跟进</td>
+                    </tr>
+                </table>
+                
+                <h3>1.3 用户流程图</h3>
+                <div class="flow-diagram">
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│  进入 H5    │ ──► │ 填写表单    │ ──► │  上传图片   │ ──► │ 点击估价    │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+                                                                     │
+                                                                     ▼
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│ 返回小程序   │ ◄── │ 确认下单    │ ◄── │ 选择方案    │ ◄── │ 展示结果    │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+                </div>
+            </div>
+            
+            <!-- 需求分析 -->
+            <div class="section" id="requirements">
+                <h2>2. 需求分析</h2>
+                
+                <h3>2.1 功能需求清单</h3>
+                <table>
+                    <tr>
+                        <th>序号</th>
+                        <th>功能模块</th>
+                        <th>功能描述</th>
+                        <th>优先级</th>
+                        <th>状态</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>漏点位置选择</td>
+                        <td>用户选择漏水位置（卫生间/厨房/阳台等 7 个选项）</td>
+                        <td><span class="tag tag-p0">P0</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>建筑信息填写</td>
+                        <td>楼层、房龄、面积段（可选）</td>
+                        <td><span class="tag tag-p1">P1</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>问题描述</td>
+                        <td>用户补充文字描述（200 字以内）</td>
+                        <td><span class="tag tag-p1">P1</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>现场图片上传</td>
+                        <td>上传 1-5 张现场照片，支持压缩</td>
+                        <td><span class="tag tag-p0">P0</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>AI 图像分析</td>
+                        <td>识别漏水严重程度（轻微/普通/严重）</td>
+                        <td><span class="tag tag-p0">P0</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>智能方案推荐</td>
+                        <td>根据严重程度匹配施工方案</td>
+                        <td><span class="tag tag-p0">P0</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>价格区间显示</td>
+                        <td>显示每个方案的报价区间</td>
+                        <td><span class="tag tag-p0">P0</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>确认下单</td>
+                        <td>用户选择方案后生成工单</td>
+                        <td><span class="tag tag-p0">P0</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>工单推送</td>
+                        <td>推送到工单系统</td>
+                        <td><span class="tag tag-p0">P0</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>小程序回调</td>
+                        <td>工单完成后回调小程序</td>
+                        <td><span class="tag tag-p1">P1</span></td>
+                        <td>✅ 已定义</td>
+                    </tr>
+                </table>
+                
+                <h3>2.2 非功能性需求</h3>
+                <table>
+                    <tr>
+                        <th>类型</th>
+                        <th>要求</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>性能</td>
+                        <td>页面加载 &lt; 3 秒，估价响应 &lt; 10 秒</td>
+                        <td>包含 AI 分析时间</td>
+                    </tr>
+                    <tr>
+                        <td>兼容性</td>
+                        <td>微信小程序 WebView、抖音小程序 WebView</td>
+                        <td>iOS / Android 系统</td>
+                    </tr>
+                    <tr>
+                        <td>安全</td>
+                        <td>HTTPS 传输、用户信息加密、图片存储备份</td>
+                        <td>API 接口鉴权</td>
+                    </tr>
+                    <tr>
+                        <td>可用性</td>
+                        <td>99.5% 可用性</td>
+                        <td>支持故障自动恢复</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- PRD 摘要 -->
+            <div class="section" id="prd">
+                <h2>3. 产品需求文档 (PRD)</h2>
+                
+                <h3>3.1 核心功能详细说明</h3>
+                
+                <h4>漏点位置选择（7 个）</h4>
+                <div class="card">
+                    <p>卫生间 | 厨房 | 阳台 | 屋顶 | 外墙 | 飘窗 | 其他</p>
+                </div>
+                
+                <h4>AI 识别病害类型（6 种）</h4>
+                <table>
+                    <tr>
+                        <th>病害类型</th>
+                        <th>说明</th>
+                        <th>典型场景</th>
+                    </tr>
+                    <tr>
+                        <td>水渍</td>
+                        <td>墙面/地面水渍印记</td>
+                        <td>卫生间墙角发霉变黑</td>
+                    </tr>
+                    <tr>
+                        <td>裂缝</td>
+                        <td>墙面/地面裂缝</td>
+                        <td>屋顶裂纹、墙体开裂</td>
+                    </tr>
+                    <tr>
+                        <td>潮湿</td>
+                        <td>局部潮湿、凝水</td>
+                        <td>地下室墙面渗水</td>
+                    </tr>
+                    <tr>
+                        <td>泛碱</td>
+                        <td>白色碱化结晶</td>
+                        <td>瓷砖缝、外墙起白硝</td>
+                    </tr>
+                    <tr>
+                        <td>渗漏</td>
+                        <td>明显漏水痕迹</td>
+                        <td>水珠滴落、明显水流</td>
+                    </tr>
+                    <tr>
+                        <td>发霉</td>
+                        <td>霉菌斑块</td>
+                        <td>黑色/绿色霉斑</td>
+                    </tr>
+                </table>
+                
+                <h4>严重程度判定</h4>
+                <table>
+                    <tr>
+                        <th>等级</th>
+                        <th>判定依据</th>
+                    </tr>
+                    <tr>
+                        <td>轻微</td>
+                        <td>局部小面积（&lt;10cm²）、早期症状、不影响结构</td>
+                    </tr>
+                    <tr>
+                        <td>普通</td>
+                        <td>明显可见、范围适中（10-50cm²）、需要处理</td>
+                    </tr>
+                    <tr>
+                        <td>严重</td>
+                        <td>大面积（&gt;50cm²）、已影响结构、需紧急处理</td>
+                    </tr>
+                </table>
+                
+                <h3>3.2 故障 - 方案映射（核心 10 种场景）</h3>
+                <table>
+                    <tr>
+                        <th>漏点位置</th>
+                        <th>故障类型</th>
+                        <th>严重程度</th>
+                        <th>方案名称</th>
+                        <th>工期</th>
+                        <th>价格区间</th>
+                    </tr>
+                    <tr>
+                        <td>卫生间</td>
+                        <td>水渍</td>
+                        <td>轻微</td>
+                        <td>局部防水涂层</td>
+                        <td>0.5 天</td>
+                        <td>200-500 元</td>
+                    </tr>
+                    <tr>
+                        <td>卫生间</td>
+                        <td>水渍</td>
+                        <td>普通</td>
+                        <td>卫生间重做防水</td>
+                        <td>2-3 天</td>
+                        <td>1500-3000 元</td>
+                    </tr>
+                    <tr>
+                        <td>卫生间</td>
+                        <td>裂缝</td>
+                        <td>轻微</td>
+                        <td>裂缝灌浆处理</td>
+                        <td>0.5 天</td>
+                        <td>300-600 元</td>
+                    </tr>
+                    <tr>
+                        <td>卫生间</td>
+                        <td>渗漏</td>
+                        <td>严重</td>
+                        <td>注浆防水 + 整体重做</td>
+                        <td>3-5 天</td>
+                        <td>3000-6000 元</td>
+                    </tr>
+                    <tr>
+                        <td>屋顶</td>
+                        <td>裂缝</td>
+                        <td>普通</td>
+                        <td>裂缝修补 + 防水卷材</td>
+                        <td>1-2 天</td>
+                        <td>1000-2000 元</td>
+                    </tr>
+                    <tr>
+                        <td>屋顶</td>
+                        <td>渗漏</td>
+                        <td>严重</td>
+                        <td>整体防水 + 隔热层</td>
+                        <td>5-7 天</td>
+                        <td>5000-10000 元</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- 技术方案 -->
+            <div class="section" id="tech">
+                <h2>4. 技术方案</h2>
+                
+                <h3>4.1 系统架构</h3>
+                <div class="flow-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│                        小程序宿主                                │
+│  ┌─────────────────┐                                            │
+│  │   WebView H5   │ ◄─── user_id / token 参数                  │
+│  └────────┬────────┘                                            │
+└───────────┼─────────────────────────────────────────────────────┘
+            │ HTTP/HTTPS
+            ▼
+┌───────────────────────────────────────────────────────────────────┐
+│                      后端服务 (Python FastAPI)                     │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
+│  │  用户模块    │  │  报价模块    │  │  工单模块               │  │
+│  │  /session   │  │  /quote     │  │  /order                │  │
+│  └─────────────┘  └─────────────┘  └─────────────────────────┘  │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │                 AI 图像分析服务 (Minimax API)                │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────────────┘
+            │                    │
+            ▼                    ▼
+    ┌───────────────┐    ┌───────────────┐
+    │   MySQL      │    │  对象存储     │
+    │  (数据库)    │    │ (OSS/COS)    │
+    └───────────────┘    └───────────────┘
+                </div>
+                
+                <h3>4.2 技术栈</h3>
+                <table>
+                    <tr>
+                        <th>层级</th>
+                        <th>技术选型</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>前端</td>
+                        <td>Vue 3 + TypeScript + Vant 4 + Vite</td>
+                        <td>响应式移动端框架</td>
+                    </tr>
+                    <tr>
+                        <td>后端</td>
+                        <td>Python FastAPI</td>
+                        <td>高性能 API 框架</td>
+                    </tr>
+                    <tr>
+                        <td>数据库</td>
+                        <td>MySQL 8.0</td>
+                        <td>关系型数据库</td>
+                    </tr>
+                    <tr>
+                        <td>对象存储</td>
+                        <td>阿里云 OSS / 腾讯云 COS</td>
+                        <td>图片存储</td>
+                    </tr>
+                    <tr>
+                        <td>AI 服务</td>
+                        <td>Minimax Vision API</td>
+                        <td>多模态图像识别</td>
+                    </tr>
+                </table>
+                
+                <h3>4.3 数据库设计</h3>
+                <h4>核心表结构</h4>
+                <ul class="checklist">
+                    <li><code>quote_requests</code> - 报价请求表（用户提交的报价申请）</li>
+                    <li><code>construction_plans</code> - 施工方案表（预定义的施工方案）</li>
+                    <li><code>orders</code> - 工单表（用户确认后的工单）</li>
+                    <li><code>system_config</code> - 系统配置表（AI 配置等）</li>
+                </ul>
+                
+                <h3>4.4 API 接口</h3>
+                <table>
+                    <tr>
+                        <th>模块</th>
+                        <th>接口路径</th>
+                        <th>方法</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>用户</td>
+                        <td><code>/api/session/verify</code></td>
+                        <td>GET</td>
+                        <td>校验用户身份</td>
+                    </tr>
+                    <tr>
+                        <td>上传</td>
+                        <td><code>/api/upload/image</code></td>
+                        <td>POST</td>
+                        <td>上传图片</td>
+                    </tr>
+                    <tr>
+                        <td>报价</td>
+                        <td><code>/api/quote/estimate</code></td>
+                        <td>POST</td>
+                        <td>提交报价请求</td>
+                    </tr>
+                    <tr>
+                        <td>报价</td>
+                        <td><code>/api/quote/result/{request_id}</code></td>
+                        <td>GET</td>
+                        <td>查询报价结果</td>
+                    </tr>
+                    <tr>
+                        <td>工单</td>
+                        <td><code>/api/quote/confirm</code></td>
+                        <td>POST</td>
+                        <td>确认方案生成工单</td>
+                    </tr>
+                    <tr>
+                        <td>工单</td>
+                        <td><code>/api/orders/{order_id}</code></td>
+                        <td>GET</td>
+                        <td>查询工单详情</td>
+                    </tr>
+                    <tr>
+                        <td>配置</td>
+                        <td><code>/api/config</code></td>
+                        <td>GET/POST</td>
+                        <td>获取/保存配置</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- 项目计划 -->
+            <div class="section" id="plan">
+                <h2>5. 项目计划</h2>
+                
+                <h3>5.1 三个子项目</h3>
+                
+                <div class="timeline">
+                    <div class="timeline-item completed">
+                        <h4>子项目 1：图片识别防水故障（1 天）✅</h4>
+                        <p><strong>目标：</strong>用户上传现场照片，AI 自动识别病害类型和严重程度</p>
+                        <p><strong>任务：</strong>API 账号申请、接口测试、后端封装、前端集成联调</p>
+                    </div>
+                    
+                    <div class="timeline-item completed">
+                        <h4>子项目 2：智能故障匹配（3 天）✅</h4>
+                        <p><strong>目标：</strong>根据 AI 识别结果，匹配故障类型，给出初步诊断说明</p>
+                        <p><strong>任务：</strong>专家确认故障 - 方案映射表、数据库设计、后端 API 开发、前端集成</p>
+                    </div>
+                    
+                    <div class="timeline-item pending">
+                        <h4>子项目 3：智能勘察预约（3 天）⏳</h4>
+                        <p><strong>目标：</strong>引导客户下单预约工程师上门勘察，生成工单</p>
+                        <p><strong>任务：</strong>预约流程设计、工单 API 开发、前端预约页面、提交联调</p>
+                    </div>
+                </div>
+                
+                <h3>5.2 总体时间线</h3>
+                <div class="card">
+                    <p><strong>总周期：</strong>7 天</p>
+                    <p><strong>第 1 天：</strong>图片识别 API 集成</p>
+                    <p><strong>第 2-4 天：</strong>故障匹配系统开发</p>
+                    <p><strong>第 5-7 天：</strong>勘察预约功能开发</p>
+                </div>
+                
+                <h3>5.3 里程碑</h3>
+                <table>
+                    <tr>
+                        <th>里程碑</th>
+                        <th>时间</th>
+                        <th>交付物</th>
+                    </tr>
+                    <tr>
+                        <td>M1：图片识别完成</td>
+                        <td>第 1 天结束</td>
+                        <td>可识别 6 种病害类型，判定严重程度</td>
+                    </tr>
+                    <tr>
+                        <td>M2：故障匹配完成</td>
+                        <td>第 4 天结束</td>
+                        <td>10 个核心场景的方案推荐</td>
+                    </tr>
+                    <tr>
+                        <td>M3：预约功能完成</td>
+                        <td>第 7 天结束</td>
+                        <td>完整工单流程，可上线测试</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- 部署与外网访问 -->
+            <div class="section" id="deployment">
+                <h2>6. 部署与外网访问</h2>
+                
+                <div class="card success">
+                    <h4>🌐 外网访问环境需求</h4>
+                    <p>要让项目外网可访问，需要搭建以下环境：</p>
+                </div>
+                
+                <h3>6.1 必需组件</h3>
+                <table>
+                    <tr>
+                        <th>组件</th>
+                        <th>说明</th>
+                        <th>推荐方案</th>
+                        <th>成本估算</th>
+                    </tr>
+                    <tr>
+                        <td>云服务器</td>
+                        <td>运行后端服务</td>
+                        <td>阿里云 ECS / 腾讯云 CVM（2 核 4G）</td>
+                        <td>¥100-200/月</td>
+                    </tr>
+                    <tr>
+                        <td>域名</td>
+                        <td>外网访问地址</td>
+                        <td>阿里云域名 / 腾讯云域名</td>
+                        <td>¥60/年</td>
+                    </tr>
+                    <tr>
+                        <td>SSL 证书</td>
+                        <td>HTTPS 加密</td>
+                        <td>Let's Encrypt（免费）或阿里云 SSL</td>
+                        <td>免费 - ¥2000/年</td>
+                    </tr>
+                    <tr>
+                        <td>对象存储</td>
+                        <td>图片存储</td>
+                        <td>阿里云 OSS / 腾讯云 COS</td>
+                        <td>¥10-50/月（按量）</td>
+                    </tr>
+                    <tr>
+                        <td>数据库</td>
+                        <td>数据存储</td>
+                        <td>云服务器自建 MySQL 或 RDS</td>
+                        <td>免费 - ¥200/月</td>
+                    </tr>
+                </table>
+                
+                <h3>6.2 部署架构</h3>
+                <div class="flow-diagram">
+用户访问
+   │
+   ▼
+┌─────────────────┐
+│   域名解析      │ (DNS - 阿里云 DNS)
+│  quote.xxx.com  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   CDN 加速      │ (可选，提升访问速度)
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Nginx 反向代理  │ (SSL 终止、负载均衡)
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  FastAPI 后端   │ (Gunicorn + Uvicorn)
+└────────┬────────┘
+         │
+         ├──────────────┬──────────────┐
+         ▼              ▼              ▼
+    ┌────────┐    ┌────────┐    ┌────────┐
+    │ MySQL  │    │  OSS   │    │ Minimax│
+    │ 数据库 │    │ 存储   │    │  AI API│
+    └────────┘    └────────┘    └────────┘
+                </div>
+                
+                <h3>6.3 部署步骤</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>步骤 1：购买云服务器和域名</h4>
+                        <pre class="pre"># 推荐配置
+云服务器：2 核 CPU, 4GB 内存，50GB 系统盘
+操作系统：Ubuntu 22.04 LTS 或 CentOS 7+
+带宽：3-5Mbps（初期）</pre>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>步骤 2：配置域名解析</h4>
+                        <pre class="pre"># 在域名服务商添加 A 记录
+类型：A
+主机记录：quote（或@）
+记录值：你的服务器公网 IP
+TTL：600</pre>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>步骤 3：安装 SSL 证书（HTTPS）</h4>
+                        <pre class="pre"># 使用 Let's Encrypt 免费证书
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d quote.yourdomain.com</pre>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>步骤 4：部署后端服务</h4>
+                        <pre class="pre"># 安装 Python 和依赖
+sudo apt install python3-pip python3-venv
+pip3 install fastapi uvicorn pymysql
+
+# 配置环境变量
+export DATABASE_URL="mysql+pymysql://user:pass@localhost/waterproof_quote"
+export OSS_ACCESS_KEY="your_key"
+export AI_API_KEY="your_minimax_key"
+
+# 启动服务（生产环境用 Gunicorn）
+gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000</pre>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>步骤 5：配置 Nginx 反向代理</h4>
+                        <pre class="pre">server {
+    listen 443 ssl;
+    server_name quote.yourdomain.com;
+    
+    ssl_certificate /etc/letsencrypt/live/quote.yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/quote.yourdomain.com/privkey.pem;
+    
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    
+    # 前端静态文件
+    location /static {
+        alias /var/www/waterproof-quote-h5/dist;
+    }
+}</pre>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>步骤 6：部署前端 H5</h4>
+                        <pre class="pre"># 构建前端
+npm install
+npm run build
+
+# 将 dist 目录上传到服务器
+scp -r dist/* user@server:/var/www/waterproof-quote-h5/</pre>
+                    </div>
+                </div>
+                
+                <h3>6.4 快速部署方案（推荐新手）</h3>
+                <div class="card">
+                    <h4>🚀 使用 Docker Compose 一键部署</h4>
+                    <pre class="pre">version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mysql+pymysql://db:3306/waterproof_quote
+      - OSS_ACCESS_KEY=${OSS_ACCESS_KEY}
+      - AI_API_KEY=${AI_API_KEY}
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: waterproof_quote
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  mysql_data:</pre>
+                </div>
+                
+                <h3>6.5 小程序配置</h3>
+                <div class="card warning">
+                    <h4>⚠️ 小程序 WebView 域名白名单</h4>
+                    <p>在微信小程序后台配置业务域名：</p>
+                    <ol>
+                        <li>登录微信公众平台</li>
+                        <li>设置 → 公众号设置 → 功能设置</li>
+                        <li>添加业务域名：<code>quote.yourdomain.com</code></li>
+                        <li>下载验证文件并上传到服务器根目录</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- 缺失项分析 -->
+            <div class="section" id="gaps">
+                <h2>7. 缺失项分析</h2>
+                
+                <div class="gap-analysis">
+                    <h3>🔍 当前缺失的内容</h3>
+                    <ul class="checklist">
+                        <li class="missing">UI 设计稿（UID 文档只有框架，缺少具体页面设计）</li>
+                        <li class="missing">前端代码实现（只有 API 定义，无实际页面）</li>
+                        <li class="missing">后端代码实现（只有数据库设计，无实际 API）</li>
+                        <li class="missing">Minimax API 账号和测试</li>
+                        <li class="missing">防水病害测试图片（10-20 张样本）</li>
+                        <li class="missing">技术专家评审故障 - 方案映射表</li>
+                        <li class="missing">历史工单数据（脱敏）</li>
+                        <li class="missing">小程序 WebView 集成测试</li>
+                        <li class="missing">压力测试和性能优化</li>
+                        <li class="missing">监控和日志系统</li>
+                    </ul>
+                </div>
+                
+                <h3>7.1 需要补充的文档</h3>
+                <table>
+                    <tr>
+                        <th>文档类型</th>
+                        <th>状态</th>
+                        <th>优先级</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>UI 设计稿</td>
+                        <td>❌ 缺失</td>
+                        <td><span class="tag tag-p0">P0</span></td>
+                        <td>需要 Figma/Sketch 设计稿或高保真原型</td>
+                    </tr>
+                    <tr>
+                        <td>接口测试文档</td>
+                        <td>❌ 缺失</td>
+                        <td><span class="tag tag-p1">P1</span></td>
+                        <td>Postman 集合或 API 测试用例</td>
+                    </tr>
+                    <tr>
+                        <td>部署手册</td>
+                        <td>❌ 缺失</td>
+                        <td><span class="tag tag-p1">P1</span></td>
+                        <td>详细的部署步骤和检查清单</td>
+                    </tr>
+                    <tr>
+                        <td>运维监控方案</td>
+                        <td>❌ 缺失</td>
+                        <td><span class="tag tag-p2">P2</span></td>
+                        <td>日志、监控、告警配置</td>
+                    </tr>
+                    <tr>
+                        <td>用户手册</td>
+                        <td>❌ 缺失</td>
+                        <td><span class="tag tag-p2">P2</span></td>
+                        <td>最终用户使用说明</td>
+                    </tr>
+                </table>
+                
+                <h3>7.2 需要确认的问题</h3>
+                <div class="card warning">
+                    <ol>
+                        <li><strong>故障类型清单是否完整？</strong>有无遗漏的病害类型？</li>
+                        <li><strong>10 个核心场景的方案和价格是否合理？</strong>需要技术专家评审</li>
+                        <li><strong>勘察预约需要收集哪些客户信息？</strong>（姓名、电话、地址、时间？）</li>
+                        <li><strong>历史工单数据是否可以提供？</strong>用于优化方案匹配</li>
+                        <li><strong>小程序主体是谁？</strong>需要配置 WebView 业务域名</li>
+                        <li><strong>预算范围？</strong>影响云服务器配置和 AI API 调用量</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- 风险评估 -->
+            <div class="section" id="risks">
+                <h2>8. 风险评估</h2>
+                
+                <table>
+                    <tr>
+                        <th>风险项</th>
+                        <th>可能性</th>
+                        <th>影响</th>
+                        <th>应对措施</th>
+                    </tr>
+                    <tr>
+                        <td>AI 识别准确率不达标</td>
+                        <td>中</td>
+                        <td>高</td>
+                        <td>准备人工审核兜底方案，持续优化训练数据</td>
+                    </tr>
+                    <tr>
+                        <td>小程序 WebView 审核不通过</td>
+                        <td>低</td>
+                        <td>高</td>
+                        <td>提前了解审核规则，准备备用域名</td>
+                    </tr>
+                    <tr>
+                        <td>高并发时性能问题</td>
+                        <td>中</td>
+                        <td>中</td>
+                        <td>使用 CDN、缓存、数据库优化</td>
+                    </tr>
+                    <tr>
+                        <td>AI API 调用成本超预算</td>
+                        <td>中</td>
+                        <td>中</td>
+                        <td>设置调用限额，优化图片压缩</td>
+                    </tr>
+                    <tr>
+                        <td>数据安全问题</td>
+                        <td>低</td>
+                        <td>高</td>
+                        <td>HTTPS 传输、数据加密、定期备份</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- 下一步行动 -->
+            <div class="section">
+                <h2>📋 下一步行动清单</h2>
+                <ul class="checklist">
+                    <li class="warning">确认故障 - 方案映射表（需要技术专家参与）</li>
+                    <li class="warning">申请 Minimax API 账号</li>
+                    <li class="warning">收集防水病害测试图片（10-20 张）</li>
+                    <li class="warning">设计 UI 页面（或找设计师）</li>
+                    <li class="warning">确定小程序主体和域名</li>
+                    <li>开始前端开发（Vue3 + Vant）</li>
+                    <li>开始后端开发（FastAPI）</li>
+                    <li>购买云服务器和域名</li>
+                    <li>部署测试环境</li>
+                    <li>联调测试</li>
+                    <li>上线发布</li>
+                </ul>
+            </div>
+            
+            <div class="card success" style="margin-top: 40px;">
+                <h3>✅ 总结</h3>
+                <p>当前项目已有完整的 PRD、技术方案和子项目计划，<strong>缺失的主要是实际代码实现和资源准备</strong>。建议按以下优先级推进：</p>
+                <ol style="margin-top: 10px;">
+                    <li><strong>本周：</strong>确认故障 - 方案映射表、申请 API 账号、收集测试图片</li>
+                    <li><strong>下周：</strong>UI 设计、前后端开发</li>
+                    <li><strong>第 3 周：</strong>联调测试、部署上线</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
